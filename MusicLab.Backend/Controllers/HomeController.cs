@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MusicLab.Backend.Services.Interfaces;
 
 namespace MusicLab.Backend.Controllers
 {
@@ -6,10 +8,18 @@ namespace MusicLab.Backend.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Index()
+        public IAWSS3Service AWSS3Service { get; set; }
+
+        public HomeController(IAWSS3Service aWSS3Service)
         {
-            return Ok();
+            AWSS3Service = aWSS3Service;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Home()
+        {
+            return null;
         }
     }
 }
