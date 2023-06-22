@@ -1,5 +1,8 @@
-﻿namespace MusicLab.Repository.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MusicLab.Repository.Models
 {
+    [Table("PlaylistSong")]
     public class PlaylistSong
     {
         public int PlaylistId { get; set; }

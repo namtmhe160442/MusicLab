@@ -1,5 +1,8 @@
-﻿namespace MusicLab.Repository.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MusicLab.Repository.Models
 {
+    [Table("SongCategory")]
     public class SongCategory
     {
         public int SongId { get; set; }

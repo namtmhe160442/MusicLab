@@ -24,6 +24,13 @@ namespace MusicLab.Repository.Models
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Album> Albums { get; set; } = null!;
         public virtual DbSet<SongCategory> SongCategories { get; set; } = null!;
+        public virtual DbSet<Artist> Artists { get; set; } = null!;
+        public virtual DbSet<FollowArtist> FollowArtists { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Favourite> Favourites { get; set; } = null!;
+        public virtual DbSet<Playlist> Playlists { get; set; } = null!;
+        public virtual DbSet<PlaylistSong> PlaylistSongs { get; set; } = null!;
+        public virtual DbSet<PlayHistory> PlayHistories { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Song>().HasOne(e => e.Album)
