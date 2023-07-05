@@ -37,7 +37,6 @@ namespace MusicLab.Backend.Controllers
                 var token = GenerateToken(user);
                 return Ok(new
                 {
-                    User = user,
                     Token = token
                 });
             }
