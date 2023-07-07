@@ -16,7 +16,7 @@ namespace MusicLab.Frontend.Pages
 
         public async Task<IActionResult> OnPostAsync(string username, string password)
         {
-            var loginUrl = "https://localhost:7054/api/Login/Login";
+            var loginUrl = "https://localhost:7054/api/login";
 
             var loginData = new
             {

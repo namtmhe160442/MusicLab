@@ -31,12 +31,15 @@ namespace MusicLab.Repository.Models
         public virtual DbSet<Playlist> Playlists { get; set; } = null!;
         public virtual DbSet<PlaylistSong> PlaylistSongs { get; set; } = null!;
         public virtual DbSet<PlayHistory> PlayHistories { get; set; } = null!;
+        public virtual DbSet<SongArtist> SongArtists { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Song>().HasOne(e => e.Album)
-                .WithMany(e => e.Songs)
+            modelBuilder.Entity<Album>().HasMany(e => e.Songs)
+                .WithOne(e => e.Album)
+                .IsRequired(false)
                 .HasForeignKey(e => e.AlbumId)
-                .HasPrincipalKey(e => e.Id);
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<SongCategory>().HasOne(e => e.Song)
                 .WithMany(e => e.SongCategories)
@@ -97,6 +100,16 @@ namespace MusicLab.Repository.Models
                 .WithMany(e => e.Playlists)
                 .HasForeignKey(e => e.Username)
                 .HasPrincipalKey(e => e.Username);
+
+            modelBuilder.Entity<SongArtist>().HasKey(e => new { e.ArtistId, e.SongId });
+            modelBuilder.Entity<SongArtist>().HasOne(e => e.Artist)
+                .WithMany(e => e.SongArtists)
+                .HasForeignKey(e => e.ArtistId)
+                .HasPrincipalKey(e => e.Id);
+            modelBuilder.Entity<SongArtist>().HasOne(e => e.Song)
+                .WithMany(e => e.SongArtists)
+                .HasForeignKey(e => e.SongId)
+                .HasPrincipalKey(e => e.Id);
         }
     }
 }

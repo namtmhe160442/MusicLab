@@ -11,6 +11,21 @@ namespace MusicLab.Repository.Models
         [Required, MaxLength(100)]
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
+        public bool IsGenre { get; set; }
+        public string Image { get; set; }
+
+        public Category()
+        {
+        }
+
+        public Category(string name, string? description, bool isGenre, string image)
+        {
+            Name = name;
+            Description = description;
+            IsGenre = isGenre;
+            Image = image;
+        }
+
         public virtual ICollection<SongCategory> SongCategories { get; set; }
     }
 }

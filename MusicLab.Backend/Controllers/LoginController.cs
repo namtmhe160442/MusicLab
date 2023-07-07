@@ -23,7 +23,7 @@ namespace MusicLab.Backend.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
+        [HttpPost("/api/login")]
         public async Task<IActionResult> Login(LoginRequestModel entity)
         {
             var user = _userRepository.Find(x => x.Username.Equals(entity.Username) && x.Password.Equals(entity.Password))
