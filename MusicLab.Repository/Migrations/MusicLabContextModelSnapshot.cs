@@ -36,6 +36,13 @@ namespace MusicLab.Repository.Migrations
                     b.Property<DateTime>("DatePublished")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfListen")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -59,6 +66,12 @@ namespace MusicLab.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CoverImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -78,6 +91,13 @@ namespace MusicLab.Repository.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsGenre")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -154,6 +174,9 @@ namespace MusicLab.Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -195,7 +218,7 @@ namespace MusicLab.Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AlbumId")
+                    b.Property<int?>("AlbumId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DatePublished")
@@ -204,9 +227,16 @@ namespace MusicLab.Repository.Migrations
                     b.Property<long>("Duration")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Image")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("Link")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("NumberOfListen")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -218,6 +248,24 @@ namespace MusicLab.Repository.Migrations
                     b.HasIndex("AlbumId");
 
                     b.ToTable("Song");
+                });
+
+            modelBuilder.Entity("MusicLab.Repository.Models.SongArtist", b =>
+                {
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SongId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ArtistId", "SongId");
+
+                    b.HasIndex("SongId");
+
+                    b.ToTable("SongArtist");
                 });
 
             modelBuilder.Entity("MusicLab.Repository.Models.SongCategory", b =>
@@ -368,10 +416,28 @@ namespace MusicLab.Repository.Migrations
                     b.HasOne("MusicLab.Repository.Models.Album", "Album")
                         .WithMany("Songs")
                         .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Album");
+                });
+
+            modelBuilder.Entity("MusicLab.Repository.Models.SongArtist", b =>
+                {
+                    b.HasOne("MusicLab.Repository.Models.Artist", "Artist")
+                        .WithMany("SongArtists")
+                        .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Album");
+                    b.HasOne("MusicLab.Repository.Models.Song", "Song")
+                        .WithMany("SongArtists")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artist");
+
+                    b.Navigation("Song");
                 });
 
             modelBuilder.Entity("MusicLab.Repository.Models.SongCategory", b =>
@@ -403,6 +469,8 @@ namespace MusicLab.Repository.Migrations
                     b.Navigation("Albums");
 
                     b.Navigation("FollowArtists");
+
+                    b.Navigation("SongArtists");
                 });
 
             modelBuilder.Entity("MusicLab.Repository.Models.Category", b =>
@@ -422,6 +490,8 @@ namespace MusicLab.Repository.Migrations
                     b.Navigation("PlayHistories");
 
                     b.Navigation("PlaylistSongs");
+
+                    b.Navigation("SongArtists");
 
                     b.Navigation("SongCategories");
                 });

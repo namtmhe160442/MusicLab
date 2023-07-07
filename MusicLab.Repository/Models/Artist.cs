@@ -12,7 +12,24 @@ namespace MusicLab.Repository.Models
         public string Name { get; set; } = null!;
         [Required]
         public string Biography { get; set; } = null!;
+
+        public string? Image { get; set; }
+        public string? CoverImage { get; set; }
+
+        public Artist(string name, string biography, string? image, string? coverImage)
+        {
+            Name = name;
+            Biography = biography;
+            Image = image;
+            CoverImage = coverImage;
+        }
+
+        public Artist()
+        {
+        }
+
         public virtual ICollection<Album> Albums { get; set; }
         public virtual ICollection<FollowArtist> FollowArtists { get; set; }
+        public virtual ICollection<SongArtist> SongArtists { get; set; }
     }
 }
