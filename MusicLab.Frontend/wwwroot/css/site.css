@@ -55,6 +55,7 @@ button {
     height: 100%;
     min-height: 0;
     overflow-y: scroll;
+    background-color: #121212;
 }
 
 .main .margin-top {
@@ -402,7 +403,7 @@ footer .progress-bar, footer .progress {
 
 footer .progress {
     background-color: #b3b3b3;
-    width: 37%;
+    
 }
 
 footer .volume-bar {
