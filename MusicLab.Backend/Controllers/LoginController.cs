@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using MusicLab.Repository;
 using MusicLab.Repository.Models;
 using MusicLab.Repository.Models.RequestModel;
+using MusicLab.Repository.Models.ResponseModel;
 using MusicLab.Repository.Repositories.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -35,9 +36,10 @@ namespace MusicLab.Backend.Controllers
             else
             {
                 var token = GenerateToken(user);
-                return Ok(new
+                return Ok(new LoginResponseModel
                 {
-                    Token = token
+                    Token = token,
+                    User = user,
                 });
             }
         }

@@ -1,3 +1,6 @@
+using MusicLab.Frontend.Services;
+using MusicLab.Frontend.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +10,8 @@ builder.Services
     {
         options.Conventions.AddPageRoute("/Home", "");
     });
+builder.Services.AddTransient<IApiCallerService, ApiCallerService>();
+
 //Add the HttpClient as a service
 builder.Services.AddHttpClient();
 builder.Services.AddSession();
