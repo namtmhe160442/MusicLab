@@ -45,7 +45,7 @@ app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
-app.UseMiddleware<CustomMiddleware>();
+//app.UseMiddleware<CustomMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.Run();
