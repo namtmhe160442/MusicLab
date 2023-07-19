@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MusicLab.Backend.Services.Interfaces;
 using MusicLab.Repository;
 using MusicLab.Repository.Models;
 using MusicLab.Repository.Models.RequestModel;
@@ -13,19 +12,15 @@ namespace MusicLab.Backend.Controllers
     [ApiController]
     public class PlaylistController : ControllerBase
     {
-        private readonly ISongRepository _songRepository;
         private readonly IPlaylistRepository _playlistRepository;
         private readonly IPlaylistSongRepository _playlistSongRepository;
         private readonly IMapper _mapper;
-        private readonly IAWSS3Service _s3Service;
 
-        public PlaylistController(IUnitOfWork unitOfWork, IMapper mapper, IAWSS3Service s3Service)
+        public PlaylistController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _songRepository = unitOfWork.SongRepository;
             _playlistRepository = unitOfWork.PlaylistRepository;
             _playlistSongRepository = unitOfWork.PlaylistSongRepository;
             _mapper = mapper;
-            _s3Service = s3Service;
         }
 
         [Authorize]

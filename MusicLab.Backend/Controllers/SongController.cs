@@ -102,5 +102,15 @@ namespace MusicLab.Backend.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("/api/get-song-url")]
+        public async Task<IActionResult> GetSongURL(int songId)
+        {
+            var song = await _songRepository.GetById(songId).ConfigureAwait(false);
+            if (song == null) return BadRequest();
+            var url = await _s3Service.GetURLAsync(song.Link).ConfigureAwait(false);
+            if (string.IsNullOrEmpty(url)) return BadRequest();
+            return Ok(url);
+        }
     }
 }

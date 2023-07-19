@@ -18,6 +18,7 @@ namespace MusicLab.Backend.Controllers
         private readonly IPlaylistRepository _playlistRepository;
         private readonly IPlayHistoryRepository _playHistoryRepository;
         private readonly ISongRepository _songRepository;
+        private readonly IArtistRepository _artistRepository;
         private readonly IMapper _mapper;
 
         public HomeController(IAWSS3Service aWSS3Service, IUnitOfWork unitOfWork, IMapper mapper)
@@ -26,6 +27,7 @@ namespace MusicLab.Backend.Controllers
             _playlistRepository = unitOfWork.PlaylistRepository;
             _playHistoryRepository = unitOfWork.PlayHistoryRepository;
             _songRepository = unitOfWork.SongRepository;
+            _artistRepository = unitOfWork.ArtistRepository;
             _mapper = mapper;
         }
 
@@ -80,10 +82,26 @@ namespace MusicLab.Backend.Controllers
             return _mapper.Map<List<SongResponseModel>>(rs);
         }
 
-        [HttpGet("/api/test")]
-        public void Test()
+        [HttpGet("/api/get-recommend-artists")]
+        public async Task<List<Artist>> GetRecommendedArtists()
         {
-            InitDatabase.DummyData();
+            var rs = await _artistRepository.GetAll().Take(6).ToListAsync().ConfigureAwait(false);
+            return rs;
         }
+
+        [HttpGet("/api/get-recommend-playlists")]
+        public async Task<List<Playlist>> GetRecommendedPlaylists()
+        {
+            var rs = await _playlistRepository.GetAll().Take(6).ToListAsync().ConfigureAwait(false);
+            return rs;
+        }
+
+        //[HttpGet("/api/test")]
+        //public void Test()
+        //{
+        //    InitDatabase.DummyData();
+        //}
+
+
     }
 }
