@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MusicLab.Repository;
 using MusicLab.Repository.Models;
+using MusicLab.Repository.Models.RequestModel;
 using MusicLab.Repository.Repositories.Interfaces;
 
 namespace MusicLab.Backend.Controllers
@@ -19,7 +21,7 @@ namespace MusicLab.Backend.Controllers
             _artistRepository = unitOfWork.ArtistRepository;
             _followArtistRepository = unitOfWork.FollowArtistRepository;
         }
-
+  
         [HttpGet("/api/get-artist-by-id")]
         public async Task<Artist> GetArtistById(int artistId)
         {
@@ -27,6 +29,7 @@ namespace MusicLab.Backend.Controllers
                                            .FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
+        [Authorize]
         [HttpGet("/api/get-follow-artists")]
         public async Task<List<Artist>> GetFollowArtists(string username)
         {
@@ -38,6 +41,28 @@ namespace MusicLab.Backend.Controllers
         {
             return await _artistRepository.Find(x => x.Name.ToLower().Contains(keyword.ToLower()))
                 .ToListAsync().ConfigureAwait(false);
+        }
+
+        [Authorize]
+        [HttpGet("/api/follow-artist")]
+        public async Task<IActionResult> FollowArtist(FollowArtistRequestModel entity)
+        {
+            var follow = new FollowArtist
+            {
+                Username = entity.Username,
+                ArtistId = entity.ArtistId,
+                FollowDate = DateTime.Now,
+            };
+            try
+            {
+                await _followArtistRepository.Add(follow).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
         }
     }
 }

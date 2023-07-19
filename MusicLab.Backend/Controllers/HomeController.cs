@@ -29,14 +29,14 @@ namespace MusicLab.Backend.Controllers
             _mapper = mapper;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("/api/get-all-playlists")]
         public async Task<List<Playlist>> GetAllPlaylists(string username)
         {
             return await _playlistRepository.Find(x => x.Username.Equals(username)).ToListAsync().ConfigureAwait(false);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("/api/get-top-6-playlists")]
         public async Task<List<Playlist>> GetTop6Playlists(string username)
         {
@@ -45,7 +45,7 @@ namespace MusicLab.Backend.Controllers
                                            .Take(6).ToListAsync().ConfigureAwait(false);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("/api/get-top-6-last-played-songs")]
         public async Task<List<SongResponseModel>> GetTop6LastPlayedSongs(string username)
         {
@@ -63,7 +63,7 @@ namespace MusicLab.Backend.Controllers
             return _mapper.Map<List<SongResponseModel>>(rs);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("/api/get-top-6-recommended-songs")]
         public async Task<List<SongResponseModel>> GetTop6RecommendedSongs(string username)
         {
@@ -72,7 +72,7 @@ namespace MusicLab.Backend.Controllers
             return _mapper.Map<List<SongResponseModel>>(rs);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("/api/get-all-recommended-songs")]
         public async Task<List<SongResponseModel>> GetAllRecommendedSongs(string username)
         {
