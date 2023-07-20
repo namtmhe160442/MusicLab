@@ -29,19 +29,23 @@ namespace MusicLab.Backend.Controllers
         }
 
         [HttpGet("/api/get-song-by-id")]
-        public async Task<SongResponseModel> GetSongById(int songId)
+        public async Task<IActionResult> GetSongById(int songId)
         {
             var rs = await _songRepository.Find(x => x.Id == songId)
-                                           .FirstOrDefaultAsync().ConfigureAwait(false);
-            return _mapper.Map<SongResponseModel>(rs);
+                .Include(x => x.SongArtists)
+                .ThenInclude(x => x.Artist)
+                .FirstOrDefaultAsync().ConfigureAwait(false);
+            return Ok(_mapper.Map<SongResponseModel>(rs));
         }
 
         [HttpGet("/api/get-songs-by-keyword")]
-        public async Task<List<SongResponseModel>> GetSongsByKeyWord(string keyword)
+        public async Task<IActionResult> GetSongsByKeyWord(string keyword)
         {
             var rs = await _songRepository.Find(x => x.Title.ToLower().Contains(keyword.ToLower()))
+                .Include(x => x.SongArtists)
+                .ThenInclude(x => x.Artist)
                 .ToListAsync().ConfigureAwait(false);
-            return _mapper.Map<List<SongResponseModel>>(rs);
+            return Ok(_mapper.Map<List<SongResponseModel>>(rs));
         }
 
         [HttpPost("/api/upload-song")]

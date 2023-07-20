@@ -4,6 +4,6 @@ namespace MusicLab.Repository.Repositories.Interfaces
 {
     public interface ISongRepository : IBaseRepository<Song>
     {
-        public Task<List<Song>> GetAllRecommendedSongs(string username);
+        public Task<List<Song>> GetAllRecommendedSongs(string username, int? top);
     }
 }
