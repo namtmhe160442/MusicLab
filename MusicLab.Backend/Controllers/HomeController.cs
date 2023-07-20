@@ -18,6 +18,8 @@ namespace MusicLab.Backend.Controllers
         private readonly IPlaylistRepository _playlistRepository;
         private readonly IPlayHistoryRepository _playHistoryRepository;
         private readonly ISongRepository _songRepository;
+        private readonly IArtistRepository _artistRepository;
+        private readonly IAlbumRepository _albumRepository;
         private readonly IMapper _mapper;
 
         public HomeController(IAWSS3Service aWSS3Service, IUnitOfWork unitOfWork, IMapper mapper)
@@ -26,6 +28,8 @@ namespace MusicLab.Backend.Controllers
             _playlistRepository = unitOfWork.PlaylistRepository;
             _playHistoryRepository = unitOfWork.PlayHistoryRepository;
             _songRepository = unitOfWork.SongRepository;
+            _artistRepository = unitOfWork.ArtistRepository;
+            _albumRepository = unitOfWork.AlbumRepository;
             _mapper = mapper;
         }
 
@@ -56,8 +60,8 @@ namespace MusicLab.Backend.Controllers
         [HttpGet("/api/get-trending-songs")]
         public async Task<List<SongResponseModel>> GetTrendingSongs()
         {
-            var rs = await _songRepository.Find(x => x.DatePublished >= DateTime.Now.AddDays(-10))
-                                       .OrderBy(x => x.NumberOfListen)
+            var rs = await _songRepository.Find(x => x.DatePublished >= DateTime.Now.AddYears(-2))
+                                       .OrderByDescending(x => x.NumberOfListen)
                                        .Take(6)
                                        .ToListAsync().ConfigureAwait(false);
             return _mapper.Map<List<SongResponseModel>>(rs);
@@ -80,10 +84,28 @@ namespace MusicLab.Backend.Controllers
             return _mapper.Map<List<SongResponseModel>>(rs);
         }
 
+        [HttpGet("/api/get-recommend-artists")]
+        public async Task<List<Artist>> GetRecommendedArtists()
+        {
+            var rs = await _artistRepository.GetAll().Take(6).ToListAsync().ConfigureAwait(false);
+            return rs;
+        }
+
+        [HttpGet("/api/get-recommend-albums")]
+        public async Task<List<Album>> GetRecommendedAlbums()
+        {
+            var rs = await _albumRepository.Find(x => x.DatePublished >= DateTime.Now.AddYears(-2))
+                .OrderBy(x => x.NumberOfListen)
+                .Take(6).ToListAsync().ConfigureAwait(false);
+            return rs;
+        }
+
         [HttpGet("/api/test")]
         public void Test()
         {
             InitDatabase.DummyData();
         }
+
+
     }
 }
