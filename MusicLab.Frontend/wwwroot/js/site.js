@@ -115,6 +115,11 @@ $(".nav-link").click(function (e) {
     e.preventDefault();
     var url = $(this).attr("href");
     loadPage(url);
+    if (url == "/Search") {
+        document.getElementById("search-top-bar").style.setProperty('display', 'flex', 'important');
+    } else {
+        document.getElementById("search-top-bar").style.setProperty('display', 'none', 'important');
+    }
 });
 //--------------------------------------------
 let main = document.getElementById('main');

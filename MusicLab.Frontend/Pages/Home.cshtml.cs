@@ -1,3 +1,5 @@
+using AutoMapper.Execution;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MusicLab.Frontend.Services.Interfaces;
 using MusicLab.Repository.Models;
@@ -13,14 +15,19 @@ namespace MusicLab.Frontend.Pages
         {
             this.apiCallerService = apiCallerService;
         }
-        public async void OnGet()
+
+        public IList<Playlist> listPlaylists { get; set; } = default!;
+
+        public async Task<IActionResult> OnGetAsync()
         {
             var userJson = HttpContext.Session.GetString("User");
             if (!string.IsNullOrEmpty(userJson)) {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
-                var playlist = await apiCallerService.GetApi<List<Playlist>>("https://localhost:7054/api/get-all-playlists?username=" + user.Username,
-                HttpContext.Session.GetString("JwtToken"));
+                var Token = HttpContext.Session.GetString("JwtToken");
+                listPlaylists = await apiCallerService.GetApi<List<Playlist>>("https://localhost:7054/api/get-all-playlists?username=" + user.Username, Token);
+                return Page();
             }
+            return Page();
         }
     }
 }

@@ -38,9 +38,15 @@ namespace MusicLab.Frontend.Pages
             else
             {
                 HttpContext.Session.SetString("JwtToken", response.Token);
-                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(response.Token));
+                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(response.User));
                 return RedirectToPage("/Home");
             }
+        }
+        public async Task<IActionResult> OnGetLogout() 
+        {
+            HttpContext.Session.Remove("JwtToken");
+            HttpContext.Session.Remove("User");
+            return RedirectToPage("/Home");
         }
     }
 }

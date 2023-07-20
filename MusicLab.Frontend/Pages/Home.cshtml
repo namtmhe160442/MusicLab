@@ -1,4 +1,7 @@
 ﻿@page
+@using System.Text.Json
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MusicLab.Repository.Models;
 @model MusicLab.Frontend.Pages.HomeModel
 @{
     Layout = "_LayoutHome";
@@ -26,76 +29,71 @@
         </ul>
 
         <div class="root-list d-flex flex-column mt-4">
-            <div class="root-list-header">
-                <h2>PLAYLISTS</h2>
+            <div class="root-list-header d-flex">
+                <h2>Library</h2>
+                <h2 class="add-playlist" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Create new playlist">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#LoginModal">
+                        <i class="fas fa-plus text-white"></i>
+                    </a>
+                </h2>
             </div>
 
             <div class="root-list-body">
-                <div class="root-list-item d-flex">
-                    <div class="root-list-icon d-flex justify-content-center align-items-center">
-                        <i class="fas fa-plus text-dark"></i>
-                    </div>
-                    <span>Add Playlist</span>
+                <div class="root-list-body-header">
+                    <span>Playlist</span>
                 </div>
-
-                <div class="root-list-item d-flex">
-                    <div class="root-list-icon heart d-flex justify-content-center align-items-center">
-                        <i class="fas fa-heart"></i>
+                @if (string.IsNullOrEmpty(HttpContext.Session.GetString("User")))
+                {
+                    <div class="root-list-item d-flex">
+                        <div class="root-list-icon d-flex justify-content-center align-items-center">
+                            <i class="fas fa-plus text-dark"></i>
+                        </div>
+                        <span>Add Playlist</span>
                     </div>
-                    <span>Liked Songs</span>
-                </div>
+                }
+                else
+                {
+                    <div class="root-list-item d-flex my-2" id="search-library">
+                        <div class="search d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Search in Library">
+                            <i class="fa-solid fa-magnifying-glass text-secondary-emphasis"></i>
+                        </div>
+                        <span><input type="text" id="search-input" class="form-control border-black bg-black text-white" placeholder="Search in library"></span>
+                    </div>
+                    <div class="root-list-item d-flex opacity-100">
+                        <div class="root-list-icon heart d-flex justify-content-center align-items-center">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <span>
+                            <span>Liked Songs</span><br />
+                            <i class="fa-solid fa-thumbtack text-success fa-rotate-by" style="--fa-rotate-angle: 45deg;"></i>
+                            <span class="fw-light ms-1" style="font-size: 12px;">Playlists</span>
+                            <span class="m-1"><i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i></span>
+                            <span class="fw-light" style="font-size: 12px;">2 Songs</span>
+                        </span>
+                    </div>
+                    @foreach (var item in Model.listPlaylists)
+                    {
+                        <div class="root-list-item d-flex">
+                            <div class="root-list-icon d-flex justify-content-center align-items-center bg-secondary">
+                                <i class="fa-solid fa-music"></i>
+                            </div>
+                            <span>
+                                <span>@item.Title</span><br />
+                                <span class="fw-light ms-1" style="font-size: 12px;">Playlists</span>
+                                <span class="m-1"><i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i></span>
+                                <span class="fw-light" style="font-size: 12px;">@item.Username</span>
+                            </span>
+                        </div>
+                    }
+                    <script src="~/js/TooltipBootstrap.js" asp-append-version="true"></script>
+                }
             </div>
-
-            <hr class="root-list-divider" />
-
-            <ul class="navbar-nav play-list-scroll overflow-auto">
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Rap's</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Funk's</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Favoritas</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Outras</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Shit Trap</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Rock's</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Hip Hop</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="play-list-item d-flex align-items-center">
-                        <a href="">Antigas</a>
-                    </div>
-                </li>
-            </ul>
         </div>
     </nav>
     <div class="top-bar">
         <header id="header" class="d-flex position-relative">
             <div id="header-overlay"></div>
-            <div class="icons-action-left d-flex">
+            <div class="icons-action-left d-flex my-auto">
                 <button class="d-flex justify-content-center align-items-center">
                     <i class="fas fa-chevron-left"></i>
                 </button>
@@ -105,20 +103,38 @@
                 </button>
             </div>
 
-            <div class="d-flex ms-auto">
-                <div class="dropdown menu ms-3">
-                    <button type="button" class="d-flex align-items-center" data-toggle="dropdown">
-                        <img class="avatar" src="img/avatar.jpg" />
-                        <span>Dat Ngo Manh</span>
-                        <i class="fas fa-caret-down ms-2 me-2"></i>
-                    </button>
-                    <div class="dropdown-menu mt-0 p-0">
-                        <a href="" class="dropdown-item">Conta</a>
-                        <a href="" class="dropdown-item">Perfil</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="" class="dropdown-item">Sair</a>
-                    </div>
+            <div class="ms-4 d-flex bg-dark rounded-pill w-25" id="search-top-bar">
+                <div class="d-flex justify-content-center align-items-center p-3">
+                    <i class="fa-solid fa-magnifying-glass text-white"></i>
                 </div>
+                <input type="text" class="form-control border-black bg-dark bg-opacity-50 text-white rounded-pill" placeholder="What do you want to listen?">
+            </div>
+
+            <div class="d-flex ms-auto my-auto">
+                @if (string.IsNullOrEmpty(HttpContext.Session.GetString("User")))
+                {
+                    <div class="d-flex justify-content-end fw-bolder">
+                        <span class="me-4 my-auto text-secondary">Register</span>
+                        <a asp-page="./Login" class="me-2 btn btn-light rounded-pill w-50 fw-bolder">Login</a>
+                    </div>
+                }
+                else
+                {
+                    User LogginedUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("User"));
+                    <div class="dropdown menu ms-3">
+                        <button type="button" class="d-flex align-items-center" data-toggle="dropdown">
+                            <img class="avatar" src="@LogginedUser.Avatar" />
+                            <span>@LogginedUser.FullName</span>
+                            <i class="fas fa-caret-down ms-2 me-2"></i>
+                        </button>
+                        <div class="dropdown-menu mt-0 p-0">
+                            <a href="" class="dropdown-item">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a asp-page="./Login" asp-page-handler="Logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                }
+                <div></div>
             </div>
         </header>
     </div>
@@ -618,4 +634,16 @@
     </div>
 </div>
 
-
+<!-- Login Modal-->
+<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-primary text-white rounded-4 p-3">
+            <h3>Create new playlist</h3>
+            <h6 class="fw-normal">Login to create new and share playlist</h6>
+            <div class="d-flex justify-content-end fw-bolder">
+                <span class="me-4 my-auto text-secondary">Later</span>
+                <span class="me-2 btn btn-light rounded-pill w-25 fw-bolder">Login</span>
+            </div>
+        </div>
+    </div>
+</div>
