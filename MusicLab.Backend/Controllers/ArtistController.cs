@@ -23,28 +23,30 @@ namespace MusicLab.Backend.Controllers
         }
   
         [HttpGet("/api/get-artist-by-id")]
-        public async Task<Artist> GetArtistById(int artistId)
+        public async Task<IActionResult> GetArtistById(int artistId)
         {
-            return await _artistRepository.Find(x => x.Id == artistId)
-                                           .FirstOrDefaultAsync().ConfigureAwait(false);
+            var rs = await _artistRepository.Find(x => x.Id == artistId).FirstOrDefaultAsync().ConfigureAwait(false);
+            return Ok(rs);
         }
 
         [Authorize]
         [HttpGet("/api/get-follow-artists")]
-        public async Task<List<Artist>> GetFollowArtists(string username)
+        public async Task<IActionResult> GetFollowArtists(string username)
         {
-            return await _followArtistRepository.GetFollowArtist(username).ConfigureAwait(false);
+            var rs = await _followArtistRepository.GetFollowArtist(username).ConfigureAwait(false);
+            return Ok(rs);
         }
 
         [HttpGet("/api/get-artists-by-keyword")]
-        public async Task<List<Artist>> GetArtistsByKeyWord(string keyword)
+        public async Task<IActionResult> GetArtistsByKeyWord(string keyword)
         {
-            return await _artistRepository.Find(x => x.Name.ToLower().Contains(keyword.ToLower()))
+            var rs = await _artistRepository.Find(x => x.Name.ToLower().Contains(keyword.ToLower()))
                 .ToListAsync().ConfigureAwait(false);
+            return Ok(rs);
         }
 
         [Authorize]
-        [HttpGet("/api/follow-artist")]
+        [HttpPost("/api/follow-artist")]
         public async Task<IActionResult> FollowArtist(FollowArtistRequestModel entity)
         {
             var follow = new FollowArtist

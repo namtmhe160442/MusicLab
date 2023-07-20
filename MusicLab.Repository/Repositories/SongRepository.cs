@@ -12,18 +12,25 @@ namespace MusicLab.Repository.Repositories
             _context = context;
         }
 
-        public async Task<List<Song>> GetAllRecommendedSongs(string username)
+        public async Task<List<Song>> GetAllRecommendedSongs(string username, int? top)
         {
-            var favouriteSongs = await _context.Favourites.Join(_context.Songs, t1 => t1.SongId, t2 => t2.Id,
-                                                (t1, t2) => new { Favourite = t1, Song = t2 })
-                                                .Where(x => x.Favourite.Username == username)
-                                                .Select(x => x.Song.Id).ToListAsync().ConfigureAwait(false);
+            var favouriteSongs = await _context.Favourites
+                                                .Where(x => x.Username == username)
+                                                .Select(x => x.SongId).Distinct().ToListAsync().ConfigureAwait(false);
             var genres = await _context.SongCategories.Join(_context.Categories, t1 => t1.CategoryId, t2 => t2.Id,
-                                                (t1, t2) => new { SongCategories = t1, Category = t2 })
+                                                (t1, t2) => new { Song = t1, Category = t2 })
+                                                .Where(x => x.Category.IsGenre)
+                                                .Where(x => favouriteSongs.Contains(x.Song.SongId))
+                                                .Select(x => x.Category.Id)
+                                                .Distinct()
                                                 .ToListAsync().ConfigureAwait(false);
-            var songIds = genres.Where(x => favouriteSongs.Contains(x.SongCategories.SongId) && x.Category.IsGenre)
-                                                .Select(x => x.SongCategories.SongId);
-            var songs = await _context.Songs.Where(x => songIds.Contains(x.Id)).ToListAsync().ConfigureAwait(false);
+            var songIds = await _context.SongCategories.Where(x => genres.Contains(x.CategoryId))
+                .Select(x => x.SongId).Distinct().ToListAsync();
+            List<Song> songs = new List<Song>();
+            if (top == null) songs = await _context.Songs.Where(x => songIds.Contains(x.Id))
+                    .Include(x => x.SongArtists).ThenInclude(x => x.Artist).ToListAsync().ConfigureAwait(false);
+            else songs = await _context.Songs.Where(x => songIds.Contains(x.Id)).OrderByDescending(x => x.NumberOfListen).Take(top.Value)
+                    .Include(x => x.SongArtists).ThenInclude(x => x.Artist).ToListAsync().ConfigureAwait(false);
             return songs;
         }
     }
