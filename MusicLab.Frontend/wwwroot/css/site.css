@@ -128,7 +128,7 @@ button {
 }
 
 .root-list .root-list-header h2 {
-    font-size: 11px;
+    font-size: 14px;
     color: #b3b3b3;
     text-transform: uppercase;
     letter-spacing: .16em;
@@ -136,8 +136,25 @@ button {
     margin-bottom: 12px;
 }
 
+    .root-list .root-list-header .add-playlist{
+        font-size: 12px;
+        color: #b3b3b3;
+        text-transform: uppercase;
+        letter-spacing: .16em;
+        margin-left: 110px;
+        margin-bottom: 12px;
+    }
+
+    .root-list .root-list-body .root-list-body-header span {
+        font-size: 12px;
+        color: #b3b3b3;
+        letter-spacing: .16em;
+        margin-left: 24px;
+        margin-bottom: 12px;
+    }
+
 .root-list-item {
-    padding: 5px 24px;
+    padding: 5px 0px 5px 24px;
     color: #fff;
     opacity: .6;
     font-weight: 500;
@@ -145,14 +162,30 @@ button {
 }
 
 .root-list-icon {
-    width: 32px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
     background-color: #fff;
     margin-right: 16px;
+    margin-top: 5px;
+}
+
+#search-input{
+    display: none;
 }
 
 .root-list-icon.heart {
     background: linear-gradient(135deg, #450af5, #c4efd9);
+}
+.root-list-icon.search {
+    background: none;
+}
+
+.form-control {
+    border: 0;
+}
+.form-control:focus{
+    box-shadow: none;
+    outline: none;
 }
 
 .root-list-divider {
@@ -248,6 +281,10 @@ button {
     height: 0;
     border-top: 1px solid #404040;
     margin: 0;
+}
+
+.root .top-bar #header #search-top-bar{
+    display: none !important;
 }
 
 .main .title {
