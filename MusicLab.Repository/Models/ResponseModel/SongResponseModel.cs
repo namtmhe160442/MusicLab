@@ -1,4 +1,6 @@
-﻿namespace MusicLab.Repository.Models.ResponseModel
+﻿using MusicLab.Repository.Models.RequestModel;
+
+namespace MusicLab.Repository.Models.ResponseModel
 {
     public class SongResponseModel
     {
@@ -10,5 +12,6 @@
         public int? AlbumId { get; set; }
         public string? Image { get; set; }
         public int NumberOfListen { get; set; }
+        public List<SongArtistResponseModel> SongArtists { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MusicLab.Repository.Models;
+using MusicLab.Repository.Models.RequestModel;
 using MusicLab.Repository.Models.ResponseModel;
 
 namespace MusicLab.Backend.Automapper
@@ -9,6 +10,8 @@ namespace MusicLab.Backend.Automapper
         public DomainToView()
         {
             CreateMap<Song, SongResponseModel>();
+            CreateMap<Artist, ArtistResponseModel>();
+            CreateMap<SongArtist, SongArtistResponseModel>();
         }
     }
 }
