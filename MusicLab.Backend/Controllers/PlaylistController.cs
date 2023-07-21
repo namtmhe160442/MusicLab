@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MusicLab.Repository;
 using MusicLab.Repository.Models;
 using MusicLab.Repository.Models.RequestModel;
@@ -79,6 +80,16 @@ namespace MusicLab.Backend.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [Authorize]
+        [HttpGet("/api/get-playlists-by-keyword")]
+        public async Task<IActionResult> GetPlaylistsByKeyword(string username, string keyword)
+        {
+            var rs = await _playlistRepository.Find(x => x.Username == username && x.Title.ToLower().Contains(keyword.ToLower()))
+                .ToListAsync()
+                .ConfigureAwait(false);
+            return Ok(rs);
         }
     }
 }

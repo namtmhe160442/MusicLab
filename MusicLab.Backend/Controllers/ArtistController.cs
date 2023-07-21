@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MusicLab.Repository;
 using MusicLab.Repository.Models;
 using MusicLab.Repository.Models.RequestModel;
+using MusicLab.Repository.Models.ResponseModel;
 using MusicLab.Repository.Repositories.Interfaces;
 
 namespace MusicLab.Backend.Controllers
@@ -13,20 +15,23 @@ namespace MusicLab.Backend.Controllers
     [ApiController]
     public class ArtistController : ControllerBase
     {
-        private IArtistRepository _artistRepository;
-        private IFollowArtistRepository _followArtistRepository;
+        private readonly IArtistRepository _artistRepository;
+        private readonly IFollowArtistRepository _followArtistRepository;
+        private readonly IMapper _mapper;
 
-        public ArtistController(IUnitOfWork unitOfWork)
+        public ArtistController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _artistRepository = unitOfWork.ArtistRepository;
             _followArtistRepository = unitOfWork.FollowArtistRepository;
+            _mapper = mapper;
         }
   
         [HttpGet("/api/get-artist-by-id")]
         public async Task<IActionResult> GetArtistById(int artistId)
         {
             var rs = await _artistRepository.Find(x => x.Id == artistId).FirstOrDefaultAsync().ConfigureAwait(false);
-            return Ok(rs);
+            var rsMap = _mapper.Map<ArtistResponseModel>(rs);
+            return Ok(rsMap);
         }
 
         [Authorize]
@@ -34,7 +39,8 @@ namespace MusicLab.Backend.Controllers
         public async Task<IActionResult> GetFollowArtists(string username)
         {
             var rs = await _followArtistRepository.GetFollowArtist(username).ConfigureAwait(false);
-            return Ok(rs);
+            var rsMap = _mapper.Map<List<ArtistResponseModel>>(rs);
+            return Ok(rsMap);
         }
 
         [HttpGet("/api/get-artists-by-keyword")]
@@ -42,7 +48,8 @@ namespace MusicLab.Backend.Controllers
         {
             var rs = await _artistRepository.Find(x => x.Name.ToLower().Contains(keyword.ToLower()))
                 .ToListAsync().ConfigureAwait(false);
-            return Ok(rs);
+            var rsMap = _mapper.Map<List<ArtistResponseModel>>(rs);
+            return Ok(rsMap);
         }
 
         [Authorize]
