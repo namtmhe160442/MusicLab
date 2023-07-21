@@ -21,7 +21,6 @@ namespace MusicLab.Frontend.Pages
         public IList<SongResponseModel> ListHistorySongs { get; set; } = default!;
         public IList<SongResponseModel> ListRecommendedSongs { get; set; } = default!;
         public IList<SongResponseModel> ListTrendingSongs { get; set; } = default!;
-        public IList<Playlist> ListTopPlaylists { get; set; } = default!;
         public IList<Album> ListRecommendedAlbums { get; set; } = default!;
         public IList<Artist> ListRecommendedArtists { get; set; } = default!;
 
@@ -34,8 +33,6 @@ namespace MusicLab.Frontend.Pages
                 ListPlaylists = await apiCallerService.GetApi<List<Playlist>>("https://localhost:7054/api/get-all-playlists?username=" + user.Username, Token);
                 ListHistorySongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-top-6-last-played-songs?username=" + user.Username, Token);
                 ListRecommendedSongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-top-6-recommended-songs?username=" + user.Username, Token);
-                ListTopPlaylists = await apiCallerService.GetApi<List<Playlist>>("https://localhost:7054/api/get-top-6-playlists?username=" + user.Username, Token);
-                return Page();
             }
             ListTrendingSongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-trending-songs", null);
             ListRecommendedAlbums = await apiCallerService.GetApi<List<Album>>("https://localhost:7054/api/get-recommend-albums", null);

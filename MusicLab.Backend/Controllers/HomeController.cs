@@ -104,8 +104,10 @@ namespace MusicLab.Backend.Controllers
         {
             var rs = await _albumRepository.Find(x => x.DatePublished >= DateTime.Now.AddYears(-2))
                 .OrderBy(x => x.NumberOfListen)
-                .Take(6).ToListAsync().ConfigureAwait(false);
-            return Ok(rs);
+                .Take(6).Include(x => x.Artist)
+                .ToListAsync().ConfigureAwait(false);
+            var rsMap = _mapper.Map<List<AlbumResponseModel>>(rs);
+            return Ok(rsMap);
         }
 
         [HttpGet("/api/test")]
