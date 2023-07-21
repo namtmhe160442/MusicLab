@@ -9,6 +9,7 @@ namespace MusicLab.Repository.Models.ResponseModel
 {
     public class ArtistResponseModel
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Biography { get; set; } = null!;
 
