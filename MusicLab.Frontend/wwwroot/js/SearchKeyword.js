@@ -2,28 +2,27 @@
     $("#search-all").on('input', function () {
         var keyword = $(this).val();
         if (keyword === null || keyword === undefined || keyword === '') {
-            loadPage("/Search");
+            
         } else {
-            $(".category-all-search").hide();
-            Manager.GetSongs(keyword);
+            $('.main-container').empty();
+            Manager.GetSearchResult(keyword);
         }
         
     });
 });
 
 var Manager = {
+    GetSearchResult: function (keyword) {
+        Manager.GetSongs(keyword);
+    },
     GetSongs: function (keyword) {
         var serviceUrl = "https://localhost:7054/api/get-songs-by-keyword?keyword=" + keyword;
-        console.log(serviceUrl);
         APIManager.GetAPI(serviceUrl, onSuccess, onFailed);
         function onSuccess(jsonData) {
-            $('.main-container').empty();
             if (jsonData.length > 0) {
                 var firstSong = jsonData[0];
                 var htmlContent = '';
-                var stringartist = '';
-
-                htmlContent += `<div class="search-result-song row list mb-5">
+                htmlContent += `<div class="row list mb-5">
                                 <div class="col-12 col-md-4 col-lg-3">
                                     <h2 class="title mb-3">Top Result</h2>
                                     <div class="card">
@@ -81,7 +80,88 @@ var Manager = {
                 });
                 htmlContent += `</div>
                                     </div>`;
-                                        
+                $('.main-container').append(htmlContent);
+            }
+            Manager.GetArtists(keyword);
+        }
+        function onFailed(xhr, status, error) {
+            window.alert(error);
+        }
+    },
+    GetArtists: function (keyword) {
+        var serviceUrl = "https://localhost:7054/api/get-artists-by-keyword?keyword=" + keyword;
+        APIManager.GetAPI(serviceUrl, onSuccess, onFailed);
+        function onSuccess(jsonData) {
+            var htmlContent = '';
+            if (jsonData.length > 0) {
+
+                htmlContent += `<div class="row list mb-5">
+                                    <h2 class="title mb-3">Artist</h2>`;
+                jsonData.forEach(function (artist) {
+
+                    htmlContent += `<div class="col-12 col-md-3 col-lg-2">
+                                            <div class="card">
+                                                <a href="">
+                                                    <img src="${artist.image}" class="card-img-top rounded-circle mb-3" />
+                                                </a>
+                                                <div class="card-body p-0">
+                                                    <a href="">
+                                                        <h5 class="card-title">${artist.name}</h5>
+                                                        <p class="card-text">Artist</p>
+                                                    </a>
+                                                </div>
+
+                                                <div class="btn-play">
+                                                    <button class="d-flex justify-content-center align-items-center">
+                                                        <i class="fas fa-play"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>`;                
+                });              
+                htmlContent += `</div>`;
+
+                $('.main-container').append(htmlContent);
+            }
+            Manager.GetAlbum(keyword);
+        }
+        function onFailed(xhr, status, error) {
+            window.alert(error);
+        }
+    },
+    GetAlbum: function (keyword) {
+        var serviceUrl = "https://localhost:7054/api/get-albums-by-keyword?keyword=" + keyword;
+        APIManager.GetAPI(serviceUrl, onSuccess, onFailed);
+        function onSuccess(jsonData) {
+            var htmlContent = '';
+            if (jsonData.length > 0) {
+
+                htmlContent += `<div class="row list mb-5">
+                                    <h2 class="title mb-3">Album</h2>`;
+                jsonData.forEach(function (album) {
+
+                    htmlContent += `<div class="col-12 col-md-3 col-lg-2">
+                                            <div class="card">
+                                                <a href="">
+                                                    <img src="${album.image}" class="card-img-top rounded-0 mb-3" />
+                                                </a>
+                                                <div class="card-body p-0">
+                                                    <a href="">
+                                                        <h5 class="card-title">${album.title}</h5>
+                                                        <p class="card-text">${album.artist.name}</p>
+                                                    </a>
+                                                </div>
+
+                                                <div class="btn-play">
+                                                    <button class="d-flex justify-content-center align-items-center">
+                                                        <i class="fas fa-play"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                });
+                htmlContent += `</div>`;
+
                 $('.main-container').append(htmlContent);
             }
         }
@@ -96,44 +176,5 @@ var Manager = {
         const seconds = Math.floor(duration % 60);
         const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         return durationFormatted;
-    }
-}
-var APIManager = {
-    GetAPI: function (serviceUrl, successCallback, errorCallback) {
-        $.ajax({
-            type: "GET",
-            url: serviceUrl,
-            dataType: "json",
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-    PostAPI: function (serviceUrl, data, successCallback, errorCallback) {
-        $.ajax({
-            type: "POST",
-            url: serviceUrl,
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-    PutAPI: function (serviceUrl, data, successCallback, errorCallback) {
-        $.ajax({
-            type: "PUT",
-            url: serviceUrl,
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-    DeleteAPI: function (serviceUrl, successCallback, errorCallback) {
-        $.ajax({
-            type: "DELETE",
-            url: serviceUrl,
-            success: successCallback,
-            error: errorCallback
-        });
     }
 }

@@ -88,16 +88,16 @@ playBtn.addEventListener("click", () => {
 });
 
 function loadPage(url) {
-    audio.pause();
-    audioPosition = audio.currentTime;
+    //audio.pause();
+    //audioPosition = audio.currentTime;
     $.ajax({
         url: url,
         success: function (data) {
             $("#main").html(data);
-            if (musicContainer.classList.contains("play")) {
-                audio.currentTime = audioPosition;
-                audio.play();
-            }
+            //if (musicContainer.classList.contains("play")) {
+            //    audio.currentTime = audioPosition;
+            //    audio.play();
+            //}
         }
     });
 }

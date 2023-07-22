@@ -30,7 +30,7 @@ namespace MusicLab.Frontend.Pages
             if (!string.IsNullOrEmpty(userJson)) {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
                 var Token = HttpContext.Session.GetString("JwtToken");
-                ListPlaylists = await apiCallerService.GetApi<List<Playlist>>("https://localhost:7054/api/get-all-playlists?username=" + user.Username, Token);
+                ListPlaylists = await apiCallerService.GetApi<List<Playlist>>("https://localhost:7054/api/get-top-6-playlists?username=" + user.Username, Token);
                 ListHistorySongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-top-6-last-played-songs?username=" + user.Username, Token);
                 ListRecommendedSongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-top-6-recommended-songs?username=" + user.Username, Token);
             }
