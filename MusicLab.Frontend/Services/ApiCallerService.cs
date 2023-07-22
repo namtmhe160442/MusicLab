@@ -79,7 +79,7 @@ namespace MusicLab.Frontend.Services
             return false;
         }
 
-        public async Task<bool> DeleteApi<T>(string url, string jwtToken)
+        public async Task<bool> DeleteApi(string url, string jwtToken)
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();

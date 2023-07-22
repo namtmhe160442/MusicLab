@@ -30,5 +30,16 @@ namespace MusicLab.Backend.Controllers
             var rsMap = _mapper.Map<List<AlbumResponseModel>>(rs);
             return Ok(rsMap);
         }
+
+        [HttpGet("/api/get-album-by-id")]
+        public async Task<IActionResult> GetAlbumsById(int albumId)
+        {
+            var rs = await _albumRepository.Find(x => x.Id == albumId)
+                .Include(x => x.Artist)
+                .FirstOrDefaultAsync().ConfigureAwait(false);
+            if (rs == null) return BadRequest();
+            var rsMap = _mapper.Map<AlbumResponseModel>(rs);
+            return Ok(rsMap);
+        }
     }
 }
