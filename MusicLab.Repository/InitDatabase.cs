@@ -59,33 +59,33 @@ namespace MusicLab.Repository
             //Add song
             if (context.Songs.Count() == 0)
             {
-                context.Songs.Add(new Song("Chỉ một đêm nữa thôi", "ChiMotDemNuaThoi.mp3", 0, DateTime.Parse("2023-02-16"), 1, "img/songs/chi-mot-dem-nua-thoi.jpg", 1350000));
-                context.Songs.Add(new Song("Anh đã ổn hơn", "AnhDaOnHon.mp3", 0, DateTime.Parse("2023-03-14"), 1, "img/songs/anh-da-on-hon.jpg", 3250000));
-                context.Songs.Add(new Song("Rồi ta sẽ ngắm pháo hoa cùng nhau", "RoiTaSeNgamPhaoHoaCungNhau.mp3", 0, DateTime.Parse("2023-01-15"), null, "img/songs/roi-ta-se-ngam-phao-hoa-cung-nhau.jfif", 150300));
-                context.Songs.Add(new Song("Wake Me Up", "WakeMeUp.mp3", 0, DateTime.Parse("2012-01-10"), 10, "img/songs/wake-me-up.jpg", 22000000));
+                context.Songs.Add(new Song("Chỉ một đêm nữa thôi", "ChiMotDemNuaThoi.mp3", 141, DateTime.Parse("2023-02-16"), 1, "img/songs/chi-mot-dem-nua-thoi.jpg", 1350000));
+                context.Songs.Add(new Song("Anh đã ổn hơn", "AnhDaOnHon.mp3", 194, DateTime.Parse("2023-03-14"), 1, "img/songs/anh-da-on-hon.jpg", 3250000));
+                context.Songs.Add(new Song("Rồi ta sẽ ngắm pháo hoa cùng nhau", "RoiTaSeNgamPhaoHoaCungNhau.mp3", 278, DateTime.Parse("2023-01-15"), null, "img/songs/roi-ta-se-ngam-phao-hoa-cung-nhau.jfif", 150300));
+                context.Songs.Add(new Song("Wake Me Up", "WakeMeUp.mp3", 251, DateTime.Parse("2012-01-10"), 10, "img/songs/wake-me-up.jpg", 22000000));
 
-                context.Songs.Add(new Song("Tại Vì Sao", "TaiViSao.mp3", 0, DateTime.Parse("2023-01-12"), 1, "img/songs/mck.png", 1000000));
-                context.Songs.Add(new Song("Thôi Em Đừng Đi", "ThoiEmDungDi.mp3", 0, DateTime.Parse("2023-01-10"), 1, "img/songs/mck.png", 10000));
-                context.Songs.Add(new Song("Va Vào Giai Điệu Này", "VaVaoGiaiDieuNay.mp3", 0, DateTime.Parse("2023-01-14"), 1, "img/songs/mck.png", 10000));
-                context.Songs.Add(new Song("Ai Mới Là Kẻ Xấu Xa", "AiMoiLaKeXauXa.mp3", 0, DateTime.Parse("2023-01-13"), 1, "img/songs/mck.png", 1000));
+                context.Songs.Add(new Song("Tại Vì Sao", "TaiViSao.mp3", 203, DateTime.Parse("2023-01-12"), 1, "img/songs/mck.png", 1000000));
+                context.Songs.Add(new Song("Thôi Em Đừng Đi", "ThoiEmDungDi.mp3", 173, DateTime.Parse("2023-01-10"), 1, "img/songs/mck.png", 10000));
+                context.Songs.Add(new Song("Va Vào Giai Điệu Này", "VaVaoGiaiDieuNay.mp3", 190, DateTime.Parse("2023-01-14"), 1, "img/songs/mck.png", 10000));
+                context.Songs.Add(new Song("Ai Mới Là Kẻ Xấu Xa", "AiMoiLaKeXauXa.mp3", 192, DateTime.Parse("2023-01-13"), 1, "img/songs/mck.png", 1000));
                 
-                context.Songs.Add(new Song("Alone", "Alone.mp3", 0, DateTime.Parse("2012-01-10"), 2, "img/songs/alanwalker.jpg", 25000000));
-                context.Songs.Add(new Song("Darkside", "Darkside.mp3", 0, DateTime.Parse("2015-01-10"), 2, "img/songs/alanwalker.jpg", 27000000));
-                context.Songs.Add(new Song("Faded", "Faded.mp3", 0, DateTime.Parse("2015-01-10"), 2, "img/songs/alanwalker.jpg", 1000000000));
-                context.Songs.Add(new Song("On My Way", "OnMyWay.mp3", 0, DateTime.Parse("2022-01-10"), 4, "img/songs/alanwalker.jpg", 2000000));
+                context.Songs.Add(new Song("Alone", "Alone.mp3", 163, DateTime.Parse("2012-01-10"), 2, "img/songs/alanwalker.jpg", 25000000));
+                context.Songs.Add(new Song("Darkside", "Darkside.mp3", 237, DateTime.Parse("2015-01-10"), 2, "img/songs/alanwalker.jpg", 27000000));
+                context.Songs.Add(new Song("Faded", "Faded.mp3", 212, DateTime.Parse("2015-01-10"), 2, "img/songs/alanwalker.jpg", 1000000000));
+                context.Songs.Add(new Song("On My Way", "OnMyWay.mp3", 217, DateTime.Parse("2022-01-10"), 4, "img/songs/alanwalker.jpg", 2000000));
                 
-                context.Songs.Add(new Song("The Spectre", "TheSpectre.mp3", 0, DateTime.Parse("2012-05-10"), 2, "img/songs/alanwalker.jpg", 2000000));
-                context.Songs.Add(new Song("DDU-DU-DDU-DU", "DDU-DU-DDU-DU.mp3", 0, DateTime.Parse("2015-03-20"), 6, "img/songs/blackpink.jpg", 15000000));
-                context.Songs.Add(new Song("Kill This Love", "KillThisLove.mp3", 0, DateTime.Parse("2022-06-16"), 6, "img/songs/blackpink.jpg", 18000000));
-                context.Songs.Add(new Song("Happier", "Happier.mp3", 0, DateTime.Parse("2019-07-08"), null, "img/songs/marshmello.jpg", 250000));
+                context.Songs.Add(new Song("The Spectre", "TheSpectre.mp3", 206, DateTime.Parse("2012-05-10"), 2, "img/songs/alanwalker.jpg", 2000000));
+                context.Songs.Add(new Song("DDU-DU-DDU-DU", "DDU-DU-DDU-DU.mp3", 78, DateTime.Parse("2015-03-20"), 6, "img/songs/blackpink.jpg", 15000000));
+                context.Songs.Add(new Song("Kill This Love", "KillThisLove.mp3", 193, DateTime.Parse("2022-06-16"), 6, "img/songs/blackpink.jpg", 18000000));
+                context.Songs.Add(new Song("Happier", "Happier.mp3", 234, DateTime.Parse("2019-07-08"), null, "img/songs/marshmello.jpg", 250000));
                 
-                context.Songs.Add(new Song("Wolves", "Wolves.mp3", 0, DateTime.Parse("2023-02-12"), null, "img/songs/marshmello.jpg", 5000000));
-                context.Songs.Add(new Song("Leave The Door Open", "LeaveTheDoorOpen.mp3", 0, DateTime.Parse("2015-08-16"), 5, "img/songs/brunomars.jfif", 820000));
-                context.Songs.Add(new Song("The Lazy Song", "TheLazySong.mp3", 0, DateTime.Parse("2016-01-01"), 5, "img/songs/brunomars.jfif", 300000));
-                context.Songs.Add(new Song("Talking To The Moon", "TalkingToTheMoon.mp3", 0, DateTime.Parse("2015-03-08"), 5, "img/songs/brunomars.jfif", 900000));
+                context.Songs.Add(new Song("Wolves", "Wolves.mp3", 213, DateTime.Parse("2023-02-12"), null, "img/songs/marshmello.jpg", 5000000));
+                context.Songs.Add(new Song("Leave The Door Open", "LeaveTheDoorOpen.mp3", 248, DateTime.Parse("2015-08-16"), 5, "img/songs/brunomars.jfif", 820000));
+                context.Songs.Add(new Song("The Lazy Song", "TheLazySong.mp3", 199, DateTime.Parse("2016-01-01"), 5, "img/songs/brunomars.jfif", 300000));
+                context.Songs.Add(new Song("Talking To The Moon", "TalkingToTheMoon.mp3", 215, DateTime.Parse("2015-03-08"), 5, "img/songs/brunomars.jfif", 900000));
 
-                context.Songs.Add(new Song("Đưa Nhau Đi Trốn", "DuaNhauDiTron.mp3", 0, DateTime.Parse("2015-02-13"), 9, "img/songs/den.jpg", 3200000));
-                context.Songs.Add(new Song("Bài Này Chill Phết", "BaiNayChillPhet.mp3", 0, DateTime.Parse("2023-04-26"), 9, "img/songs/den.jpg", 1600000));
+                context.Songs.Add(new Song("Đưa Nhau Đi Trốn", "DuaNhauDiTron.mp3", 241, DateTime.Parse("2015-02-13"), 9, "img/songs/den.jpg", 3200000));
+                context.Songs.Add(new Song("Bài Này Chill Phết", "BaiNayChillPhet.mp3", 273, DateTime.Parse("2023-04-26"), 9, "img/songs/den.jpg", 1600000));
 
                 context.SaveChanges();
             }
@@ -248,4 +248,16 @@ namespace MusicLab.Repository
             context.SaveChanges();
         }
     }
+
+    //function secondsToMinutesText(seconds) {
+//    const minutes = Math.floor(seconds / 60);
+//    const remainingSeconds = seconds % 60;
+
+//    const minutesText = minutes > 0 ? `${minutes
+//}
+//minute${ minutes !== 1 ? 's' : ''}` : '';
+//const secondsText = remainingSeconds > 0 ? `${remainingSeconds} second${ remainingSeconds !== 1 ? 's' : ''}` : '';
+
+//return `${ minutesText} ${ secondsText}`.trim();
+//}
 }
