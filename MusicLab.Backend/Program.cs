@@ -9,6 +9,15 @@ using MusicLab.Repository.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
@@ -46,6 +55,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
 //app.UseMiddleware<CustomMiddleware>();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.Run();
