@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MusicLab.Repository;
@@ -25,7 +24,7 @@ namespace MusicLab.Backend.Controllers
             _followArtistRepository = unitOfWork.FollowArtistRepository;
             _mapper = mapper;
         }
-  
+
         [HttpGet("/api/get-artist-by-id")]
         public async Task<IActionResult> GetArtistById(int artistId)
         {
@@ -71,7 +70,23 @@ namespace MusicLab.Backend.Controllers
             {
                 return BadRequest();
             }
+        }
 
+        [Authorize]
+        [HttpDelete("/api/unfollow-artist")]
+        public async Task<IActionResult> UnfollowArtist(FollowArtistRequestModel entity)
+        {
+            var isFollowed = await _followArtistRepository.Find(x => x.Username == entity.Username && x.ArtistId == entity.ArtistId).FirstOrDefaultAsync().ConfigureAwait(false);
+            if (isFollowed != null) return BadRequest();
+            try
+            {
+                await _followArtistRepository.Delete(isFollowed).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
     }
 }

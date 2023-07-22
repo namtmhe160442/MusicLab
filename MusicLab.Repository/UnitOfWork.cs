@@ -19,6 +19,7 @@ namespace MusicLab.Repository
         private IPlaylistSongRepository _playlistSongRepository;
         private ISongRepository _songRepository;
         private ISongCategoryRepository _songCategoryRepository; 
+        private ISongArtistRepository _songArtistRepository;
 
         public UnitOfWork(MusicLabContext context)
         {
@@ -36,5 +37,6 @@ namespace MusicLab.Repository
         public IPlaylistSongRepository PlaylistSongRepository { get { return _playlistSongRepository ?? new PlaylistSongRepository(_context); } }
         public ISongRepository SongRepository { get { return _songRepository ?? new SongRepository(_context); } }
         public ISongCategoryRepository SongCategoryRepository { get { return _songCategoryRepository ?? new SongCategoryRepository(_context); } }
+        public ISongArtistRepository SongArtistRepository { get { return _songArtistRepository ?? new SongArtistRepository(_context); } }
     }
 }

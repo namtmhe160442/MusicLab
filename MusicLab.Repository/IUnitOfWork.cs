@@ -15,5 +15,6 @@ namespace MusicLab.Repository
         public IPlaylistSongRepository PlaylistSongRepository { get; }
         public ISongRepository SongRepository { get; }
         public ISongCategoryRepository SongCategoryRepository { get; }
+        public ISongArtistRepository SongArtistRepository { get; }
     }
 }
