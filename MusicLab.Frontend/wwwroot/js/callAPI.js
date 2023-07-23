@@ -1,4 +1,27 @@
 ﻿var APIManager = {
+    GetAPISongUrl: function (serviceUrl) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: serviceUrl,
+                dataType: "text",
+                success: resolve,
+                error: reject
+            });
+        });
+    },
+
+    GetAPIReturn: function (serviceUrl) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: serviceUrl,
+                dataType: "json",
+                success: resolve,
+                error: reject
+            });
+        });
+    },
     GetAPI: function (serviceUrl, successCallback, errorCallback) {
         $.ajax({
             type: "GET",

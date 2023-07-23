@@ -6,27 +6,36 @@ const musicContainer = document.getElementById("music-container");
 const playBtn = document.getElementById("play");
 const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
+const randomBtn = document.getElementById("random-audio");
+const redoBtn = document.getElementById("redo-audio");
 
 const audio = document.getElementById("audio");
 const progress = document.getElementById("progress");
+const progressVolumeBar = document.getElementById("progress-volume-bar");
 const progressCurrentTime = document.getElementById("progress-currentTime");
 const progressDuration = document.getElementById("progress-duration");
 const progressContainer = document.getElementById("progress-container");
+const progressVolume = document.getElementById("progress-volume");
 const title = document.getElementById("title");
 const cover = document.getElementById("cover");
 const artist = document.getElementById("artist");
 
 const searchPage = document.getElementById("link_search");
 
-const songs = ["test", "test2"];
+const songs = [];
 let songIndex = 1;
 var audioPosition = 0;
 
-loadSong(songs[songIndex]);
-function loadSong(song) {
-    title.innerText = song;
-    audio.src = `img/songs/${song}.mp3`;
-    cover.src = `img/cds/${song}.jpg`;
+function loadSong(index) {
+    songIndex = index;
+    const song = songs[index];
+    if (song) {
+        title.innerText = song.title;
+        artist.innerText = song.artist;
+        audio.src = song.audioUrl;
+        cover.src = song.cover;
+    }
+    
 }
 
 function playSong() {
@@ -49,7 +58,7 @@ function prevSong() {
     if (songIndex < 0) {
         songIndex = songs.length - 1;
     }
-    loadSong(songs[songIndex]);
+    loadSong(songIndex);
     playSong();
 }
 
@@ -58,8 +67,44 @@ function nextSong() {
     if (songIndex > songs.length - 1) {
         songIndex = 0;
     }
-    loadSong(songs[songIndex]);
+    loadSong(songIndex);
     playSong();
+}
+
+function randomSong() {
+    if (randomBtn.querySelector("i.fas").classList.contains("text-success")) {
+        songIndex++;
+        if (songIndex > songs.length - 1) {
+            songIndex = 0;
+        }
+        randomBtn.querySelector("i.fas").classList.add("color-default");
+        randomBtn.querySelector("i.fas").classList.remove("text-success");
+    } else {
+        songIndex = getRandomNumber(0, songs.length);
+        if (songIndex > songs.length - 1) {
+            songIndex = 0;
+        }
+        randomBtn.querySelector("i.fas").classList.remove("color-default");
+        randomBtn.querySelector("i.fas").classList.add("text-success");
+    }
+    
+}
+
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function redoSong() {
+    if (audio.loop == true) {
+        audio.loop = false
+        redoBtn.querySelector("i.fas").classList.add("color-default");
+        redoBtn.querySelector("i.fas").classList.remove("text-success");
+    }
+    else {
+        audio.loop = true
+        redoBtn.querySelector("i.fas").classList.remove("color-default");
+        redoBtn.querySelector("i.fas").classList.add("text-success");
+    }
 }
 
 function updateProgress(e) {
@@ -76,6 +121,16 @@ function setProgress(e) {
     const duration = audio.duration;
 
     audio.currentTime = (clickX / width) * duration;
+}
+
+function setVolume(e) {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = 1;
+
+    audio.volume = (clickX / width) * duration;
+    const progressPercent = (audio.volume / duration) * 100;
+    progressVolumeBar.style.width = `${progressPercent}%`;
 }
 
 playBtn.addEventListener("click", () => {
@@ -102,12 +157,16 @@ function loadPage(url) {
     });
 }
 
+
 prevBtn.addEventListener("click", prevSong);
 nextBtn.addEventListener("click", nextSong);
+randomBtn.addEventListener("click", randomSong);
+redoBtn.addEventListener("click", redoSong);
 
 audio.addEventListener("timeupdate", updateProgress);
 
 progressContainer.addEventListener("click", setProgress);
+progressVolume.addEventListener("click", setVolume);
 
 audio.addEventListener("ended", nextSong);
 

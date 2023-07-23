@@ -43,8 +43,8 @@ var Manager = {
                 htmlContent += `</p>
                                     </a>
                                         </div>
-                                        <div class="btn-play">
-                                            <button class="d-flex justify-content-center align-items-center">
+                                        <div class="btn-play" id="${firstSong.id}">
+                                            <button class="play-music-btn d-flex justify-content-center align-items-center">
                                                 <i class="fas fa-play"></i>
                                             </button>
                                         </div>
@@ -53,13 +53,13 @@ var Manager = {
                                 <div class="col-12 col-md-8 col-lg-9">
                                             <h2 class="title mb-3">Songs</h2>`;
                 jsonData.forEach(function (song) {
-                    htmlContent += `<div class="search-song-hover d-flex p-2">
-                                                <a href="" class="search-btnPlay position-relative">
+                    htmlContent += `<div class="search-song-hover d-flex p-2" id="${song.id}">
+                                                <div class="play-music-btn search-btnPlay position-relative">
                                                     <img src="${song.image}" class="searched-song d-inline my-auto rounded">
                                                     <div class="search-btnPlay-song position-absolute top-50 start-50 translate-middle">
                                                         <i class="fa-solid fa-play text-white"></i>
                                                     </div>
-                                                </a>
+                                                </div>
                                                 <div class="d-inline-block ms-4 text-white-50">
                                                     <b class="fs-5 text-white">${song.title}</b><br />
                                                     <span>`;
@@ -81,6 +81,11 @@ var Manager = {
                 htmlContent += `</div>
                                     </div>`;
                 $('.main-container').append(htmlContent);
+                $('.main-container').on('click', '.play-music-btn', function (event) {
+                    var songId = $(this).parent().attr('id');
+                    songs.length = 0;
+                    ManagerSong.GetSongById(songId);
+                });
             }
             Manager.GetArtists(keyword);
         }
@@ -111,8 +116,8 @@ var Manager = {
                                                     </a>
                                                 </div>
 
-                                                <div class="btn-play">
-                                                    <button class="d-flex justify-content-center align-items-center">
+                                                <div class="btn-play" id="${artist.id}">
+                                                    <button class="play-music-artist-btn d-flex justify-content-center align-items-center">
                                                         <i class="fas fa-play"></i>
                                                     </button>
                                                 </div>
@@ -122,6 +127,12 @@ var Manager = {
                 htmlContent += `</div>`;
 
                 $('.main-container').append(htmlContent);
+
+                $('.main-container').on('click', '.play-music-artist-btn', function (event) {
+                    var artistId = $(this).parent().attr('id');
+                    songs.length = 0;
+                    ManagerSong.GetSongByArtistId(artistId);
+                });
             }
             Manager.GetAlbum(keyword);
         }
@@ -152,8 +163,8 @@ var Manager = {
                                                     </a>
                                                 </div>
 
-                                                <div class="btn-play">
-                                                    <button class="d-flex justify-content-center align-items-center">
+                                                <div class="btn-play" id="${album.id}">
+                                                    <button class="play-music-album-btn d-flex justify-content-center align-items-center">
                                                         <i class="fas fa-play"></i>
                                                     </button>
                                                 </div>
@@ -163,6 +174,12 @@ var Manager = {
                 htmlContent += `</div>`;
 
                 $('.main-container').append(htmlContent);
+
+                $('.main-container').on('click', '.play-music-album-btn', function (event) {
+                    var albumId = $(this).parent().attr('id');
+                    songs.length = 0;
+                    ManagerSong.GetSongByAlbumId(albumId);
+                });
             }
         }
         function onFailed(xhr, status, error) {
