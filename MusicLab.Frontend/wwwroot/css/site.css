@@ -170,7 +170,7 @@ button {
 }
 
 #search-input{
-    display: none;
+    display: none !important;
 }
 
 .root-list-icon.heart {

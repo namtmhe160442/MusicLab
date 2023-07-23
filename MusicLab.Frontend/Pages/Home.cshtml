@@ -53,11 +53,15 @@
                 }
                 else
                 {
+                    var token = HttpContext.Session.GetString("JwtToken");
+                    var username = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("User")).Username;
+                    <input class="jwt-token" type="text" value="@token" hidden />
+                    <input class="username-logged" type="text" value="@username" hidden />
                     <div class="root-list-item d-flex my-2" id="search-library">
                         <div class="search d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Search in Library">
                             <i class="fa-solid fa-magnifying-glass text-secondary-emphasis"></i>
                         </div>
-                        <span><input type="text" id="search-input" class="form-control border-black bg-black text-white" placeholder="Search in library"></span>
+                        <input id="search-input" type="text" class="form-control border-black bg-black text-white" placeholder="Search in library">
                     </div>
                     <div class="root-list-item d-flex opacity-100">
                         <div class="root-list-icon heart d-flex justify-content-center align-items-center">
@@ -71,22 +75,25 @@
                             <span class="fw-light" style="font-size: 12px;">2 Songs</span>
                         </span>
                     </div>
-                    @foreach (var item in Model.ListPlaylists)
-                    {
-                        <div class="root-list-item d-flex">
-                            <div class="root-list-icon d-flex justify-content-center align-items-center bg-secondary">
-                                <i class="fa-solid fa-music"></i>
+                    <div id="search-playlist">
+                        @foreach (var item in Model.ListPlaylists)
+                        {
+                            <div class="root-list-item d-flex">
+                                <div class="root-list-icon d-flex justify-content-center align-items-center bg-secondary">
+                                    <i class="fa-solid fa-music"></i>
+                                </div>
+                                <span>
+                                    <span>@item.Title</span><br />
+                                    <span class="fw-light ms-1" style="font-size: 12px;">Playlists</span>
+                                    <span class="m-1"><i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i></span>
+                                    <span class="fw-light" style="font-size: 12px;">@item.Username</span>
+                                </span>
                             </div>
-                            <span>
-                                <span>@item.Title</span><br />
-                                <span class="fw-light ms-1" style="font-size: 12px;">Playlists</span>
-                                <span class="m-1"><i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i></span>
-                                <span class="fw-light" style="font-size: 12px;">@item.Username</span>
-                            </span>
-                        </div>
-                    }
-                    <script src="~/js/TooltipBootstrap.js" asp-append-version="true"></script>
+                        }
+                    </div>
+                    
                 }
+
             </div>
         </div>
     </nav>
@@ -180,10 +187,11 @@
                     }
                 </div>
 
-                    User userLogged = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("User"));
-                    <h2 class="title mb-3">Song for 
-                        @userLogged.FullName
-                    </h2>
+                User userLogged = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("User"));
+                <h2 class="title mb-3">
+                    Song for
+                    @userLogged.FullName
+                </h2>
 
                 <div class="row list mb-5">
                     @foreach (var item in Model.ListRecommendedSongs)
@@ -232,10 +240,10 @@
                             <div class="card-body p-0">
                                 <a href="">
                                     <h5 class="card-title">@item.Title</h5>
-                                     <p class="card-text">
-                                    @foreach(var artist in item.SongArtists)
-                                    {
-                                            if(artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
+                                    <p class="card-text">
+                                        @foreach (var artist in item.SongArtists)
+                                        {
+                                            if (artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
                                             {
                                                 artist.Artist.Name += ", ";
                                             }
@@ -274,7 +282,7 @@
                                 <a href="">
                                     <h5 class="card-title">@item.Title</h5>
                                     <p class="card-text">
-                                            @item.Artist.Name
+                                        @item.Artist.Name
                                     </p>
                                 </a>
                             </div>
