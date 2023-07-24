@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MusicLab.Repository;
+using MusicLab.Repository.Models.RequestModel;
 using MusicLab.Repository.Models.ResponseModel;
 using MusicLab.Repository.Repositories.Interfaces;
 
@@ -23,6 +25,7 @@ namespace MusicLab.Backend.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet("/api/get-all-favourites")]
         public async Task<IActionResult> GetAllFavourites(string username)
         {
@@ -33,6 +36,23 @@ namespace MusicLab.Backend.Controllers
                 .ThenInclude(x => x.Artist)
                 .ToListAsync().ConfigureAwait(false);
             return Ok(_mapper.Map<List<SongResponseModel>>(favourites));
+        }
+
+        [Authorize]
+        [HttpDelete("/api/delete-favourite")]
+        public async Task<IActionResult> DeleteFavourite(AddFavouriteSongRequestModel entity)
+        {
+            var favourite = await _favouriteRepository.Find(x => x.Username == entity.Username && x.SongId == entity.SongId).FirstOrDefaultAsync().ConfigureAwait(false);
+            if (favourite == null) return BadRequest();
+            try
+            {
+                await _favouriteRepository.Delete(favourite).ConfigureAwait(false);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }
