@@ -13,6 +13,9 @@ namespace MusicLab.Backend.Automapper
             CreateMap<Artist, ArtistResponseModel>();
             CreateMap<SongArtist, SongArtistResponseModel>();
             CreateMap<Album, AlbumResponseModel>();
+            CreateMap<Playlist, PlaylistResponseModel>();
+            CreateMap<PlaylistSong, PlaylistSongResponseModel>();
+
         }
     }
 }
