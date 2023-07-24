@@ -24,5 +24,10 @@ namespace MusicLab.Frontend.Pages
             ListAlbums = await apiCallerService.GetApi<List<AlbumResponseModel>>("https://localhost:7054/api/get-album-by-artistid?artistId=" + Album.Artist.Id, null);
             return Page();
         }
+        public string GetFormattedTime(long durationInSeconds)
+        {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(durationInSeconds);
+            return $"{(int)timeSpan.TotalMinutes}:{timeSpan.Seconds:D2}";
+        }
     }
 }

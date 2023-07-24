@@ -11,14 +11,14 @@
         
         <div class="position-absolute top-50 start-50 translate-middle d-flex" style="padding: 70px 0 0 70px;">
             <img src="@Model.Album.Image" class="album-cover rounded d-inline-flex" />
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column ms-4 justify-content-center align-content-center">
                 <span class="fs-6 text-white">Album</span>
-                <h1 class="text-white fw-bold font-monospace" style="font-size:120px;">@Model.Album.Title</h1>
-                <span class="fs-4 text-white">@Model.Album.Artist.Name 
+                <h1 class="text-white fw-bold font-monospace fs-1" style="font-size: 100px;">@Model.Album.Title</h1>
+                <span class="fs-5 text-white">@Model.Album.Artist.Name 
                     <i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i> 
-                    2023
+                    @Model.Album.DatePublished.Year
                     <i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i> 
-                    
+                    @Model.Songs.Count() Songs
                 </span>
             </div>
         </div>
@@ -63,7 +63,7 @@
                     <span class="search-favorite ms-auto me-5 align-content-center text-white-50">
                         <span style="margin-right:300px;"> @string.Format("{0:0,0,0}", @item.NumberOfListen)</span>
                         <i class="search-favorite-song fa-regular fa-heart me-5"></i>
-                        @item.Duration
+                        @Model.GetFormattedTime(item.Duration)
                     </span>
                 </div>
             }

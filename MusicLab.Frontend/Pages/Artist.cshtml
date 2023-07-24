@@ -55,7 +55,7 @@
                     <span class="search-favorite ms-auto me-5 align-content-center text-white-50">
                         <span style="margin-right:300px;"> @string.Format("{0:0,0,0}", @item.NumberOfListen)</span>
                         <i class="search-favorite-song fa-regular fa-heart me-5"></i>
-                        @item.Duration
+                        @Model.GetFormattedTime(item.Duration)
                     </span>
                 </div>
             }
@@ -65,15 +65,16 @@
             <div class="col-12 col-md-4 col-lg-3">
                 <h2 class="title mb-3">Album Trending</h2>
                 <div class="card">
-                    <a href="">
+                    <a href="/Album?albumId=@Model.ListAlbums[0].Id" class="nav-link">
                         <img src="@Model.ListAlbums[0].Image" class="card-img-top rounded-0 mb-3" />
-                    </a>
+                    
                     <div class="card-body p-0">
-                        <a href="">
+
                             <h5 class="card-title">@Model.ListAlbums[0].Title</h5>
                             <p class="card-text">@Model.ListAlbums[0].Artist.Name</p>
-                        </a>
+
                     </div>
+                    </a>
                     <div class="btn-play" id="@Model.ListAlbums[0].Id">
                         <button class="play-music-album-btn d-flex justify-content-center align-items-center">
                             <i class="fas fa-play"></i>
@@ -91,17 +92,16 @@
             {
                 <div class="col-12 col-md-3 col-lg-2">
                     <div class="card">
-                        <a href="">
+                        <a href="/Album?albumId=@item.Id" class="nav-link">
                             <img src="@item.Image" class="card-img-top rounded-0 mb-3" />
-                        </a>
+                        
                         <div class="card-body p-0">
-                            <a href="">
                                 <h5 class="card-title">@item.Title</h5>
                                 <p class="card-text">
                                     @item.Artist.Name
                                 </p>
-                            </a>
                         </div>
+                        </a>
                         <div class="btn-play" id="@item.Id">
                             <button class="play-music-album-btn d-flex justify-content-center align-items-center">
                                 <i class="fas fa-play"></i>
@@ -155,7 +155,7 @@
             <div class="card">
                 <img src="@Model.Artist.Image" class="card-img-artist rounded-circle mb-3" />
                 <div class="card-body p-0">
-                    <a href="">
+                    <a href="#">
                         <h5 class="card-title">@Model.Artist.Name</h5>
                         <p class="card-text">
                             @Model.Artist.Biography

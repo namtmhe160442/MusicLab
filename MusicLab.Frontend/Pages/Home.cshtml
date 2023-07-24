@@ -93,7 +93,7 @@
                             </div>
                         }
                     </div>
-                    
+
                 }
 
             </div>
@@ -160,23 +160,23 @@
                     {
                         <div class="col-12 col-md-3 col-lg-2">
                             <div class="card">
-                                <a href="#">
-                                    <img src="@item.Image" class="card-img-top rounded-0 mb-3" />
-                                </a>
+
+                                <img src="@item.Image" class="card-img-top rounded-0 mb-3" />
+
                                 <div class="card-body p-0">
-                                    <a href="#">
-                                        <h5 class="card-title">@item.Title</h5>
-                                        <p class="card-text">
-                                            @foreach (var artist in item.SongArtists)
+
+                                    <h5 class="card-title">@item.Title</h5>
+                                    <p class="card-text">
+                                        @foreach (var artist in item.SongArtists)
+                                        {
+                                            if (artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
                                             {
-                                                if (artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
-                                                {
-                                                    artist.Artist.Name += ", ";
-                                                }
-                                                @artist.Artist.Name
+                                                artist.Artist.Name += ", ";
                                             }
-                                        </p>
-                                    </a>
+                                            @artist.Artist.Name
+                                        }
+                                    </p>
+
                                 </div>
 
                                 <div class="btn-play" id="@item.Id">
@@ -200,23 +200,22 @@
                     {
                         <div class="col-12 col-md-3 col-lg-2">
                             <div class="card">
-                                <a href="#">
-                                    <img src="@item.Image" class="card-img-top rounded-0 mb-3" />
-                                </a>
+
+                                <img src="@item.Image" class="card-img-top rounded-0 mb-3" />
+
                                 <div class="card-body p-0">
-                                    <a href="#">
-                                        <h5 class="card-title">@item.Title</h5>
-                                        <p class="card-text">
-                                            @foreach (var artist in item.SongArtists)
+
+                                    <h5 class="card-title">@item.Title</h5>
+                                    <p class="card-text">
+                                        @foreach (var artist in item.SongArtists)
+                                        {
+                                            if (artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
                                             {
-                                                if (artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
-                                                {
-                                                    artist.Artist.Name += ", ";
-                                                }
-                                                @artist.Artist.Name
+                                                artist.Artist.Name += ", ";
                                             }
-                                        </p>
-                                    </a>
+                                            @artist.Artist.Name
+                                        }
+                                    </p>
                                 </div>
 
                                 <div class="btn-play" id="@item.Id">
@@ -236,23 +235,23 @@
                 {
                     <div class="col-12 col-md-3 col-lg-2">
                         <div class="card">
-                            <a href="#">
-                                <img src="@item.Image" class="card-img-top rouded-0 mb-3" />
-                            </a>
+
+                            <img src="@item.Image" class="card-img-top rouded-0 mb-3" />
+
                             <div class="card-body p-0">
-                                <a href="#">
-                                    <h5 class="card-title">@item.Title</h5>
-                                    <p class="card-text">
-                                        @foreach (var artist in item.SongArtists)
+
+                                <h5 class="card-title">@item.Title</h5>
+                                <p class="card-text">
+                                    @foreach (var artist in item.SongArtists)
+                                    {
+                                        if (artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
                                         {
-                                            if (artist.ArtistId != item.SongArtists.LastOrDefault().ArtistId)
-                                            {
-                                                artist.Artist.Name += ", ";
-                                            }
-                                            @artist.Artist.Name
+                                            artist.Artist.Name += ", ";
                                         }
-                                    </p>
-                                </a>
+                                        @artist.Artist.Name
+                                    }
+                                </p>
+
                             </div>
 
                             <div class="btn-play" id="@item.Id">
@@ -279,16 +278,14 @@
                         <div class="card">
                             <a href="/Album?albumId=@item.Id" class="nav-link">
                                 <img src="@item.Image" class="card-img-top rounded-0 mb-3" />
-                            </a>
-                            <div class="card-body p-0">
-                                <a href="#">
+
+                                <div class="card-body p-0">
                                     <h5 class="card-title">@item.Title</h5>
                                     <p class="card-text">
                                         @item.Artist.Name
                                     </p>
-                                </a>
-                            </div>
-
+                                </div>
+                            </a>
                             <div class="btn-play" id="@item.Id">
                                 <button class="play-music-album-btn d-flex justify-content-center align-items-center">
                                     <i class="fas fa-play"></i>
@@ -311,7 +308,7 @@
                 }
                 @foreach (var item in Model.ListRecommendedArtists)
                 {
-                    if(count < 6)
+                    if (count < 6)
                     {
                         <div class="col-12 col-md-3 col-lg-2">
                             <div class="card">
@@ -345,8 +342,8 @@
                         <img src="img/cds/player.jpg" id="cover" />
                     </div>
                     <div class="d-flex flex-column text ms-3 me-3">
-                        <label class="m-0" id="title">Piloto Automático</label>
-                        <span id="artist">Supercombo</span>
+                        <label class="m-0" id="title">Song Name</label>
+                        <span id="artist">Artist</span>
                     </div>
 
                     <div class="d-flex icon justify-content-center align-items-center">
@@ -383,14 +380,14 @@
 
                         <div class="d-flex align-items-center">
                             <div class="progress-time">
-                                <span class="color-default" id="progress-currentTime">1:12</span>
+                                <span class="color-default" id="progress-currentTime">0:00</span>
                             </div>
                             <div class="progress-bar" id="progress-container">
                                 <div class="progress" id="progress"></div>
                             </div>
                             <audio src="img/songs/test.mp3" id="audio"></audio>
                             <div class="progress-time">
-                                <span class="color-default" id="progress-duration">3:15</span>
+                                <span class="color-default" id="progress-duration">0:00</span>
                             </div>
                         </div>
                     </div>

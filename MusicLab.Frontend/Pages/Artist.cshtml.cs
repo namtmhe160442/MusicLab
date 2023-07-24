@@ -47,5 +47,11 @@ namespace MusicLab.Frontend.Pages
             if (rs) return Page();
             else return null;
         }
+
+        public string GetFormattedTime(long durationInSeconds)
+        {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(durationInSeconds);
+            return $"{(int)timeSpan.TotalMinutes}:{timeSpan.Seconds:D2}";
+        }
     }
 }
