@@ -144,6 +144,7 @@ namespace MusicLab.Backend.Controllers
             return Ok(_mapper.Map<List<SongResponseModel>>(songs));
         }
 
+        [Authorize]
         [HttpGet("/api/get-songs-by-playlist")]
         public async Task<IActionResult> GetSongsByPlaylist(int playlistId)
         {
