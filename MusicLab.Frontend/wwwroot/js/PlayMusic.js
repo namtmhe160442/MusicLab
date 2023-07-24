@@ -6,16 +6,20 @@
         ManagerSong.GetSongById(songId);
     });
 
+    $('.main-container').on('click', '.play-music-btn-artist', function (event) {
+        var songId = $(this).parent().attr('id');
+        songs.length = 0;
+        ManagerSong.GetSongById(songId);
+    });
+
     $(".play-music-album-btn").on('click', function () {
-        var itemDiv = $(this).closest(".btn-play");
-        var albumId = itemDiv.attr("id");
+        var albumId = $(this).parent().attr("id");
         songs.length = 0;
         ManagerSong.GetSongByAlbumId(albumId);
     });
 
     $(".play-music-artist-btn").on('click', function () {
-        var itemDiv = $(this).closest(".btn-play");
-        var artistId = itemDiv.attr("id");
+        var artistId = $(this).parent().attr("id");
         songs.length = 0;
         ManagerSong.GetSongByArtistId(artistId);
     });

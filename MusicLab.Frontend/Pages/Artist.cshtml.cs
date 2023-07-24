@@ -13,6 +13,8 @@ namespace MusicLab.Frontend.Pages
         private readonly IApiCallerService apiCallerService;
         public ArtistResponseModel Artist;
         public List<SongResponseModel> Songs { get; set; }
+        public List<AlbumResponseModel> ListAlbums { get; set; }
+        public IList<Artist> ListRecommendedArtists { get; set; } = default!;
 
         public ArtistModel(IApiCallerService apiCallerService)
         {
@@ -22,6 +24,8 @@ namespace MusicLab.Frontend.Pages
         {
             Artist = await apiCallerService.GetApi<ArtistResponseModel>("https://localhost:7054/api/get-artist-by-id?artistId=" + artistId, null);
             Songs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-songs-by-artist?artistId=" + artistId, null);
+            ListAlbums = await apiCallerService.GetApi<List<AlbumResponseModel>>("https://localhost:7054/api/get-album-by-artistid?artistId=" + artistId, null);
+            ListRecommendedArtists = await apiCallerService.GetApi<List<Artist>>("https://localhost:7054/api/get-recommend-artists", null);
             return Page();
         }
 

@@ -95,7 +95,7 @@ namespace MusicLab.Backend.Controllers
         [HttpGet("/api/get-recommend-artists")]
         public async Task<IActionResult> GetRecommendedArtists()
         {
-            var rs = await _artistRepository.GetAll().Take(6).ToListAsync().ConfigureAwait(false);
+            var rs = await _artistRepository.GetAll().ToListAsync().ConfigureAwait(false);
             return Ok(rs);
         }
 

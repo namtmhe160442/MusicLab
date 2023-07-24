@@ -2,12 +2,11 @@
     $("#search-all").on('input', function () {
         var keyword = $(this).val();
         if (keyword === null || keyword === undefined || keyword === '') {
-            
+            Manager.GetCategory();
         } else {
             $('.main-container').empty();
             Manager.GetSearchResult(keyword);
         }
-        
     });
 });
 
@@ -122,8 +121,8 @@ var Manager = {
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>`;                
-                });              
+                                        </div>`;
+                });
                 htmlContent += `</div>`;
 
                 $('.main-container').append(htmlContent);
@@ -180,6 +179,37 @@ var Manager = {
                     songs.length = 0;
                     ManagerSong.GetSongByAlbumId(albumId);
                 });
+            }
+        }
+        function onFailed(xhr, status, error) {
+            window.alert(error);
+        }
+    },
+    GetCategory: function () {
+        var serviceUrl = "https://localhost:7054/api/get-all-categories";
+        APIManager.GetAPI(serviceUrl, onSuccess, onFailed);
+        function onSuccess(jsonData) {
+            $('.main-container').empty();
+            var htmlContent = '';
+            if (jsonData.length > 0) {
+
+                htmlContent += `<div class="category-all-search row list">
+                                    <h2 class="title mb-3">Categories All</h2>`;
+
+                jsonData.forEach(function (category) {
+
+                    htmlContent += `<div class="col-12 col-md-3 col-lg-2">
+                                            <div class="card p-0 mb-2">
+                                                <a href="" class="position-relative">
+                                                    <img src="${category.image}" class="card-img-top rounded" />
+                                                    <h3 class="position-absolute top-0 start-0 ms-2 mt-2 text-white">${category.name}</h3>
+                                                </a>
+                                            </div>
+                                        </div>`;
+                });
+                htmlContent += `</div>`;
+
+                $('.main-container').append(htmlContent);
             }
         }
         function onFailed(xhr, status, error) {
