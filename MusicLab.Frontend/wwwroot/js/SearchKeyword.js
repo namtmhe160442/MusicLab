@@ -2,12 +2,11 @@
     $("#search-all").on('input', function () {
         var keyword = $(this).val();
         if (keyword === null || keyword === undefined || keyword === '') {
-            
+            Manager.GetCategory();
         } else {
             $('.main-container').empty();
             Manager.GetSearchResult(keyword);
         }
-        
     });
 });
 
@@ -26,11 +25,11 @@ var Manager = {
                                 <div class="col-12 col-md-4 col-lg-3">
                                     <h2 class="title mb-3">Top Result</h2>
                                     <div class="card">
-                                        <a href="">
+                                        
                                             <img src="${firstSong.image}" class="card-img-top rounded-circle w-50 mb-2" />
-                                        </a>
+                                        
                                         <div class="card-body p-0 ms-2">
-                                            <a href="">
+                                            
                                                 <h3 class="card-title">${firstSong.title}</h3>
                                                 <p class="card-text">`;
 
@@ -41,7 +40,7 @@ var Manager = {
                     htmlContent += song.artist.name;
                 });
                 htmlContent += `</p>
-                                    </a>
+                                    
                                         </div>
                                         <div class="btn-play" id="${firstSong.id}">
                                             <button class="play-music-btn d-flex justify-content-center align-items-center">
@@ -106,24 +105,24 @@ var Manager = {
 
                     htmlContent += `<div class="col-12 col-md-3 col-lg-2">
                                             <div class="card">
-                                                <a href="">
+                                                <a href="/Artist?artistId=${artist.id}" class="nav-link">
                                                     <img src="${artist.image}" class="card-img-top rounded-circle mb-3" />
-                                                </a>
+                                                
                                                 <div class="card-body p-0">
-                                                    <a href="">
+                                               
                                                         <h5 class="card-title">${artist.name}</h5>
                                                         <p class="card-text">Artist</p>
-                                                    </a>
+                                   
                                                 </div>
-
+                                                    </a>
                                                 <div class="btn-play" id="${artist.id}">
                                                     <button class="play-music-artist-btn d-flex justify-content-center align-items-center">
                                                         <i class="fas fa-play"></i>
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>`;                
-                });              
+                                        </div>`;
+                });
                 htmlContent += `</div>`;
 
                 $('.main-container').append(htmlContent);
@@ -132,6 +131,11 @@ var Manager = {
                     var artistId = $(this).parent().attr('id');
                     songs.length = 0;
                     ManagerSong.GetSongByArtistId(artistId);
+                });
+                $(".nav-link").click(function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    loadPage(url);
                 });
             }
             Manager.GetAlbum(keyword);
@@ -153,16 +157,16 @@ var Manager = {
 
                     htmlContent += `<div class="col-12 col-md-3 col-lg-2">
                                             <div class="card">
-                                                <a href="">
+                                                <a href="/Album?albumId=${album.id}" class="nav-link">
                                                     <img src="${album.image}" class="card-img-top rounded-0 mb-3" />
-                                                </a>
+                                                
                                                 <div class="card-body p-0">
-                                                    <a href="">
+                                               
                                                         <h5 class="card-title">${album.title}</h5>
                                                         <p class="card-text">${album.artist.name}</p>
-                                                    </a>
+                                        
                                                 </div>
-
+                                                </a>
                                                 <div class="btn-play" id="${album.id}">
                                                     <button class="play-music-album-btn d-flex justify-content-center align-items-center">
                                                         <i class="fas fa-play"></i>
@@ -180,6 +184,42 @@ var Manager = {
                     songs.length = 0;
                     ManagerSong.GetSongByAlbumId(albumId);
                 });
+                $(".nav-link").click(function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    loadPage(url);
+                });
+            }
+        }
+        function onFailed(xhr, status, error) {
+            window.alert(error);
+        }
+    },
+    GetCategory: function () {
+        var serviceUrl = "https://localhost:7054/api/get-all-categories";
+        APIManager.GetAPI(serviceUrl, onSuccess, onFailed);
+        function onSuccess(jsonData) {
+            $('.main-container').empty();
+            var htmlContent = '';
+            if (jsonData.length > 0) {
+
+                htmlContent += `<div class="category-all-search row list">
+                                    <h2 class="title mb-3">Categories All</h2>`;
+
+                jsonData.forEach(function (category) {
+
+                    htmlContent += `<div class="col-12 col-md-3 col-lg-2">
+                                            <div class="card p-0 mb-2">
+                                                <a href="" class="position-relative">
+                                                    <img src="${category.image}" class="card-img-top rounded" />
+                                                    <h3 class="position-absolute top-0 start-0 ms-2 mt-2 text-white">${category.name}</h3>
+                                                </a>
+                                            </div>
+                                        </div>`;
+                });
+                htmlContent += `</div>`;
+
+                $('.main-container').append(htmlContent);
             }
         }
         function onFailed(xhr, status, error) {

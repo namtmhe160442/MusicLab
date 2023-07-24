@@ -17,7 +17,7 @@ namespace MusicLab.Frontend.Pages
         public IList<SongResponseModel> ListHistorySongs { get; set; } = default!;
         public IList<SongResponseModel> ListRecommendedSongs { get; set; } = default!;
         public IList<SongResponseModel> ListTrendingSongs { get; set; } = default!;
-        public IList<Album> ListRecommendedAlbums { get; set; } = default!;
+        public IList<AlbumResponseModel> ListRecommendedAlbums { get; set; } = default!;
         public IList<Artist> ListRecommendedArtists { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync()
@@ -31,7 +31,7 @@ namespace MusicLab.Frontend.Pages
                 ListRecommendedSongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-top-6-recommended-songs?username=" + user.Username, Token);
             }
             ListTrendingSongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-trending-songs", null);
-            ListRecommendedAlbums = await apiCallerService.GetApi<List<Album>>("https://localhost:7054/api/get-recommend-albums", null);
+            ListRecommendedAlbums = await apiCallerService.GetApi<List<AlbumResponseModel>>("https://localhost:7054/api/get-recommend-albums", null);
             ListRecommendedArtists = await apiCallerService.GetApi<List<Artist>>("https://localhost:7054/api/get-recommend-artists", null);
             return Page();
         }

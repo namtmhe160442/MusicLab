@@ -176,8 +176,12 @@ $(".nav-link").click(function (e) {
     loadPage(url);
     if (url == "/Search") {
         document.getElementById("search-top-bar").style.setProperty('display', 'flex', 'important');
+        document.getElementById("nav-item-home").classList.remove("active");
+        document.getElementById("nav-item-search").classList.add("active");
     } else {
         document.getElementById("search-top-bar").style.setProperty('display', 'none', 'important');
+        document.getElementById("nav-item-home").classList.add("active");
+        document.getElementById("nav-item-search").classList.remove("active");
     }
 });
 //--------------------------------------------

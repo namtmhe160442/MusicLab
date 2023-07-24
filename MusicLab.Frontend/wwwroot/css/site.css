@@ -344,12 +344,13 @@ button {
     opacity: .6;
 }
 
-.main .list .card .btn-play {
-    position: absolute;
-    right: 16px;
-    bottom: 16px;
-    opacity: 0;
-}
+    .main .list .card .btn-play {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        opacity: 0;
+        transition: transform .2s;
+    }
 
 .search-btnPlay-song, .search-favorite-song {
     opacity: 0;
@@ -370,12 +371,32 @@ button {
     height: 22vh;
     object-fit: cover;
 }
+.card-img-artist {
+    width: 50%;
+    height: 40vh;
+    object-fit: cover;
+    object-position: 0 10%;
+}
+
+.img-cover {
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+    object-position: 0 10%;
+}
+
+.album-cover {
+    width: 20%;
+    height: 20%;
+    object-fit: cover;
+}
 
 .main .list .card:hover > .btn-play {
     opacity: 1;
+    transform: scale(1.2);
 } 
 
-.main .list .card .btn-play button {
+.main .list .card .btn-play button{
     color: #fff;
     background-color: #1db954;
     border-radius: 50%;
@@ -384,6 +405,28 @@ button {
     height: 40px;
     padding: 0;
     font-size: 12px;
+}
+.main .btn-play-artist button{
+    color: #fff;
+    background-color: #1db954;
+    border-radius: 50%;
+    border: none;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    font-size: 14px;
+}
+
+.main .btn-play-artist {
+    transition: transform .2s;
+}
+
+    
+.main .btn-follow-artist {
+    transition: transform .2s;
+}
+.main .btn-play-artist:hover, .main .btn-follow-artist:hover {
+    transform: scale(1.2);
 }
 
 .main .view-more {
