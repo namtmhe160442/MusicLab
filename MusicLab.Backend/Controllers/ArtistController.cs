@@ -16,12 +16,16 @@ namespace MusicLab.Backend.Controllers
     {
         private readonly IArtistRepository _artistRepository;
         private readonly IFollowArtistRepository _followArtistRepository;
+        private readonly ISongArtistRepository _songArtistRepository;
+        private readonly ISongRepository _songRepository;
         private readonly IMapper _mapper;
 
         public ArtistController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _artistRepository = unitOfWork.ArtistRepository;
             _followArtistRepository = unitOfWork.FollowArtistRepository;
+            _songArtistRepository = unitOfWork.SongArtistRepository;
+            _songRepository = unitOfWork.SongRepository;
             _mapper = mapper;
         }
 
@@ -76,17 +80,34 @@ namespace MusicLab.Backend.Controllers
         [HttpDelete("/api/unfollow-artist")]
         public async Task<IActionResult> UnfollowArtist(FollowArtistRequestModel entity)
         {
-            var isFollowed = await _followArtistRepository.Find(x => x.Username == entity.Username && x.ArtistId == entity.ArtistId).FirstOrDefaultAsync().ConfigureAwait(false);
-            if (isFollowed != null) return BadRequest();
+            var followed = await _followArtistRepository.Find(x => x.Username == entity.Username && x.ArtistId == entity.ArtistId).FirstOrDefaultAsync().ConfigureAwait(false);
+            if (followed != null) return BadRequest();
             try
             {
-                await _followArtistRepository.Delete(isFollowed).ConfigureAwait(false);
+                await _followArtistRepository.Delete(followed).ConfigureAwait(false);
                 return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet("/api/get-follows-by-artist")]
+        public async Task<IActionResult> GetFollowsByArtist(int artistId)
+        {
+            var follows = await _followArtistRepository.Find(x => x.ArtistId == artistId).CountAsync().ConfigureAwait(false);
+            return Ok(follows);
+        }
+
+        [HttpGet("/api/get-listens-by-artist")]
+        public async Task<IActionResult> GetListensByArtist(int artistId)
+        {
+            var songIds = await _songArtistRepository.Find(x => x.ArtistId == artistId).Select(x => x.SongId).Distinct().ToListAsync().ConfigureAwait(false);
+            var listens = await _songRepository.Find(x => songIds.Contains(x.Id))
+                .SumAsync(x => x.NumberOfListen)
+                .ConfigureAwait(false);
+            return Ok(listens);
         }
     }
 }
