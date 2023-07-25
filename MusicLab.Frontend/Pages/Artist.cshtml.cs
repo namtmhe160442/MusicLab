@@ -11,11 +11,17 @@ namespace MusicLab.Frontend.Pages
     public class ArtistModel : PageModel
     {
         private readonly IApiCallerService apiCallerService;
+
+        public bool IsFollow = false;
+
+        public int Followers;
+        public int Listens;
         public ArtistResponseModel Artist;
         public List<SongResponseModel> Songs { get; set; }
-        public List<AlbumResponseModel> ListAlbums { get; set; }
+        public List<SongResponseModel> FavoriteSongs { get; set; } = default!;
+        public List<AlbumResponseModel> ListAlbums { get; set; } = default!;
         public IList<Artist> ListRecommendedArtists { get; set; } = default!;
-
+        public IList<ArtistResponseModel> ListFollowArtists { get; set; } = default!;
         public ArtistModel(IApiCallerService apiCallerService)
         {
             this.apiCallerService = apiCallerService;
@@ -26,6 +32,23 @@ namespace MusicLab.Frontend.Pages
             Songs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-songs-by-artist?artistId=" + artistId, null);
             ListAlbums = await apiCallerService.GetApi<List<AlbumResponseModel>>("https://localhost:7054/api/get-album-by-artistid?artistId=" + artistId, null);
             ListRecommendedArtists = await apiCallerService.GetApi<List<Artist>>("https://localhost:7054/api/get-recommend-artists", null);
+            Followers = await apiCallerService.GetApi<int>("https://localhost:7054/api/get-follows-by-artist?artistId=" + artistId, null);
+            Listens = await apiCallerService.GetApi<int>("https://localhost:7054/api/get-listens-by-artist?artistId=" + artistId, null);
+            var userJson = HttpContext.Session.GetString("User");
+            if (!string.IsNullOrEmpty(userJson))
+            {
+                var user = JsonConvert.DeserializeObject<User>(userJson);
+                var Token = HttpContext.Session.GetString("JwtToken");
+                ListFollowArtists = await apiCallerService.GetApi<List<ArtistResponseModel>>("https://localhost:7054/api/get-follow-artists?username=" + user.Username, Token);
+                FavoriteSongs = await apiCallerService.GetApi<List<SongResponseModel>>("https://localhost:7054/api/get-all-favourites?username=" + user.Username, Token);
+                foreach (var fl in ListFollowArtists)
+                {
+                    if(fl.Id == artistId)
+                    {
+                        IsFollow = true;
+                    }
+                }
+            }
             return Page();
         }
 

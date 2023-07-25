@@ -90,7 +90,8 @@ button {
 
 .nav-bar-header .logo {
     width: 131px;
-    max-height: 40px;
+    max-height: 50px;
+    object-fit: cover;
 }
 
 .nav-bar .navbar-nav {
@@ -384,6 +385,12 @@ button {
     object-fit: cover;
     object-position: 0 10%;
 }
+.img-cover-playlist {
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+    object-position: 0 0;
+}
 
 .album-cover {
     width: 20%;
@@ -425,7 +432,14 @@ button {
 .main .btn-follow-artist {
     transition: transform .2s;
 }
-.main .btn-play-artist:hover, .main .btn-follow-artist:hover {
+.main .btn-unfollow-artist {
+    transition: transform .2s;
+}
+.main .btn-follow-modal {
+    transition: transform .2s;
+}
+.main .btn-play-artist:hover, .main .btn-follow-artist:hover, 
+.main .btn-unfollow-artist:hover, .main .btn-follow-modal:hover {
     transform: scale(1.2);
 }
 

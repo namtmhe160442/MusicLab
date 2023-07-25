@@ -12,7 +12,7 @@
         {
             <div class="col-12 col-md-3 col-lg-2">
                 <div class="card p-0 mb-2">
-                    <a href="" class="position-relative">
+                    <a href="/Category?categoryId=@item.Id" class="nav-link-category position-relative">
                         <img src="@item.Image" class="card-img-top rounded" />
                         <h3 class="position-absolute top-0 start-0 ms-2 mt-2 text-white">@item.Name</h3>
                     </a>
@@ -23,3 +23,10 @@
 </div>
 
 <script src="~/js/SearchKeyword.js" asp-append-version="true"></script>
+<script>
+    $(".nav-link-category").click(function (e) {
+        e.preventDefault();
+        var url = $(this).attr("href");
+        loadPage(url);
+    });
+</script>

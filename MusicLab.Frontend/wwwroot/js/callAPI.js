@@ -62,6 +62,20 @@
 }
 
 var APIManagerSecurity = {
+    GetAPISecurityReturn: function (serviceUrl, authToken) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: serviceUrl,
+                headers: {
+                    "Authorization": "Bearer " + authToken
+                },
+                dataType: "json",
+                success: resolve,
+                error: reject
+            });
+        });
+    },
     GetAPISecurity: function (serviceUrl, authToken, successCallback, errorCallback) {
         $.ajax({
             type: "GET",
@@ -100,13 +114,15 @@ var APIManagerSecurity = {
             error: errorCallback
         });
     },
-    DeleteAPISecurity: function (serviceUrl, authToken, successCallback, errorCallback) {
+    DeleteAPISecurity: function (serviceUrl, authToken, data, successCallback, errorCallback) {
         $.ajax({
             type: "DELETE",
             url: serviceUrl,
             headers: {
                 Authorization: 'Bearer ' + authToken
             },
+            contentType: "application/json",
+            data: JSON.stringify(data),
             success: successCallback,
             error: errorCallback
         });

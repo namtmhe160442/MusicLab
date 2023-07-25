@@ -30,5 +30,12 @@ namespace MusicLab.Backend.Controllers
             var rs = await _categoryRepository.GetAll().ToListAsync().ConfigureAwait(false);
             return Ok(rs);
         }
+
+        [HttpGet("/api/get-category-byId")]
+        public async Task<IActionResult> GetCategoryById(int categoryId)
+        {
+            var rs = await _categoryRepository.Find(x => x.Id == categoryId).FirstOrDefaultAsync().ConfigureAwait(false);
+            return Ok(rs);
+        }
     }
 }

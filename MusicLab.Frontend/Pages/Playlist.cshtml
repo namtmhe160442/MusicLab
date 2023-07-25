@@ -1,31 +1,30 @@
 ﻿@page
-@model MusicLab.Frontend.Pages.AlbumModel
+@model MusicLab.Frontend.Pages.PlaylistModel
 @{
     Layout = "_LayoutHome";
-    ViewData["Title"] = "Album";
+    ViewData["Title"] = "Playlist";
 }
 <div class="margin-top"></div>
 <div class="main-container">
     <div class="row list mb-5 position-relative">
-        <img src="@Model.Album.Artist.CoverImage" class="img-cover rounded-top" />
-        
+        <img src="~/img/cds/music-default.jpg" class="img-cover-playlist rounded-top" />
+
         <div class="position-absolute top-50 start-50 translate-middle d-flex" style="padding: 70px 0 0 70px;">
-            <img src="@Model.Album.Image" class="album-cover rounded d-inline-flex" />
+            <img src="~/img/cds/music-default.jpg" class="album-cover rounded d-inline-flex" />
             <div class="d-flex flex-column ms-4 justify-content-center align-content-center">
-                <span class="fs-6 text-white">Album</span>
-                <h1 class="text-white fw-bold font-monospace fs-1" style="font-size: 100px;">@Model.Album.Title</h1>
-                <span class="fs-5 text-white">@Model.Album.Artist.Name 
-                    <i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i> 
-                    @Model.Album.DatePublished.Year
-                    <i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i> 
-                    @Model.Songs.Count() Songs
+                <span class="fs-5 text-white">Playlist</span>
+                <h1 class="text-white fw-bold font-monospace fs-1" style="font-size: 150px;">@Model.playlist.Title</h1>
+                <span class="fs-3 text-white">
+                    @Model.playlist.Username
+                    <i class="fa-solid fa-circle align-content-center" style="font-size: 5px;"></i>
+                    @Model.playlist.PlaylistSongs.Count() Songs
                 </span>
             </div>
         </div>
     </div>
     <div class="mb-5 d-flex">
-        <div class="btn-play-artist d-inline-flex" id="@Model.Album.Id">
-            <button class="play-music-album-btn d-flex justify-content-center align-items-center">
+        <div class="btn-play-artist d-inline-flex" id="@Model.playlist.Id">
+            <button class="play-music-playlist-btn d-flex justify-content-center align-items-center">
                 <i class="fas fa-play fs-4"></i>
             </button>
         </div>
@@ -55,7 +54,7 @@
                             }
                         </span>
                     </div>
-                    <span class="search-favorite ms-auto me-5 align-content-center text-white-50" id="@Model.Album.Id">
+                    <span class="search-favorite ms-auto me-5 align-content-center text-white-50" id="@Model.playlist.Id">
                         <span style="margin-right:300px;"> @string.Format("{0:0,0,0}", @item.NumberOfListen)</span>
                         @if (string.IsNullOrEmpty(HttpContext.Session.GetString("User")))
                         {
@@ -70,14 +69,14 @@
                             {
                                 if (item.Id == favor.Id)
                                 {
-                                    <i class="del-favorite-song-album fa-solid fa-heart me-5 text-success" id="@item.Id"></i>
+                                    <i class="del-favorite-song-playlist fa-solid fa-heart me-5 text-success" id="@item.Id"></i>
                                     isLike++;
                                     break;
                                 }
                             }
                             if (isLike == 0)
                             {
-                                <i class="search-favorite-song add-favorite-song-album fa-regular fa-heart me-5" id="@item.Id"></i>
+                                <i class="search-favorite-song add-favorite-song-playlist fa-regular fa-heart me-5" id="@item.Id"></i>
                             }
                         }
                         @Model.GetFormattedTime(item.Duration)
@@ -86,44 +85,4 @@
             }
         </div>
     </div>
-
-    @if (Model.ListAlbums?.Any() == true)
-    {
-        <div class="row list mb-5">
-            <h2 class="title mb-3">Other Album of @Model.Album.Artist.Name</h2>
-            @foreach (var item in Model.ListAlbums)
-            {
-                if (item.Id != Model.Album.Id)
-                {
-                    <div class="col-12 col-md-3 col-lg-2">
-                        <div class="card">
-                            <a href="/Album?albumId=@item.Id" class="nav-link">
-                                <img src="@item.Image" class="card-img-top rounded-0 mb-3" />
-
-                                <div class="card-body p-0">
-                                    <h5 class="card-title">@item.Title</h5>
-                                    <p class="card-text">
-                                        @item.Artist.Name
-                                    </p>
-                                </div>
-                            </a>
-                            <div class="btn-play" id="@item.Id">
-                                <button class="play-music-album-btn d-flex justify-content-center align-items-center">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    }
 </div>
-
-<script>
-    $(".nav-link").click(function (e) {
-        e.preventDefault();
-        var url = $(this).attr("href");
-        loadPage(url);
-    });
-</script>

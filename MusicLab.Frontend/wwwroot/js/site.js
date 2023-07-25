@@ -168,7 +168,10 @@ audio.addEventListener("timeupdate", updateProgress);
 progressContainer.addEventListener("click", setProgress);
 progressVolume.addEventListener("click", setVolume);
 
-audio.addEventListener("ended", nextSong);
+audio.addEventListener("ended", function () {
+    ManagerSong.UpdateListens(songs[songIndex].id);
+    nextSong();
+});
 
 $(".nav-link").click(function (e) {
     e.preventDefault();
@@ -183,6 +186,11 @@ $(".nav-link").click(function (e) {
         document.getElementById("nav-item-home").classList.add("active");
         document.getElementById("nav-item-search").classList.remove("active");
     }
+});
+$(".nav-link-playlist").click(function (e) {
+    e.preventDefault();
+    var url = $(this).attr("href");
+    loadPage(url);
 });
 //--------------------------------------------
 let main = document.getElementById('main');

@@ -81,7 +81,7 @@ namespace MusicLab.Backend.Controllers
         public async Task<IActionResult> UnfollowArtist(FollowArtistRequestModel entity)
         {
             var followed = await _followArtistRepository.Find(x => x.Username == entity.Username && x.ArtistId == entity.ArtistId).FirstOrDefaultAsync().ConfigureAwait(false);
-            if (followed != null) return BadRequest();
+            if (followed == null) return BadRequest();
             try
             {
                 await _followArtistRepository.Delete(followed).ConfigureAwait(false);

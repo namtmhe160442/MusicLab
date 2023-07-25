@@ -19,6 +19,7 @@ namespace MusicLab.Backend.Controllers
         private readonly IFavouriteRepository _favouriteRepository;
         private readonly ISongArtistRepository _songArtistRepository;
         private readonly IPlaylistSongRepository _playlistSongRepository;
+        private readonly ISongCategoryRepository _songCategoryRepository;
         private readonly IMapper _mapper;
         private readonly IAWSS3Service _s3Service;
 
@@ -28,6 +29,7 @@ namespace MusicLab.Backend.Controllers
             _favouriteRepository = unitOfWork.FavouriteRepository;
             _songArtistRepository = unitOfWork.SongArtistRepository;
             _playlistSongRepository = unitOfWork.PlaylistSongRepository;
+            _songCategoryRepository = unitOfWork.SongCategoryRepository;
             _mapper = mapper;
             _s3Service = s3Service;
         }
@@ -136,6 +138,18 @@ namespace MusicLab.Backend.Controllers
         public async Task<IActionResult> GetSongsByArtist(int artistId)
         {
             var songIds = await _songArtistRepository.Find(x => x.ArtistId == artistId).Select(x => x.SongId).Distinct().ToListAsync().ConfigureAwait(false);
+            var songs = await _songRepository.Find(x => songIds.Contains(x.Id))
+                .Include(x => x.SongArtists)
+                .ThenInclude(x => x.Artist)
+                .ToListAsync().ConfigureAwait(false);
+            if (songs == null) return BadRequest();
+            return Ok(_mapper.Map<List<SongResponseModel>>(songs));
+        }
+
+        [HttpGet("/api/get-songs-by-category")]
+        public async Task<IActionResult> GetSongsByCategory(int categoryId)
+        {
+            var songIds = await _songCategoryRepository.Find(x => x.CategoryId == categoryId).Select(x => x.SongId).Distinct().ToListAsync().ConfigureAwait(false);
             var songs = await _songRepository.Find(x => songIds.Contains(x.Id))
                 .Include(x => x.SongArtists)
                 .ThenInclude(x => x.Artist)
