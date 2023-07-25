@@ -168,7 +168,10 @@ audio.addEventListener("timeupdate", updateProgress);
 progressContainer.addEventListener("click", setProgress);
 progressVolume.addEventListener("click", setVolume);
 
-audio.addEventListener("ended", nextSong);
+audio.addEventListener("ended", function () {
+    ManagerSong.UpdateListens(songs[songIndex].id);
+    nextSong();
+});
 
 $(".nav-link").click(function (e) {
     e.preventDefault();

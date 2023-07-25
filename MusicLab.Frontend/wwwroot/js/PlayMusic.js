@@ -55,6 +55,7 @@ var ManagerSong = {
             });
 
             const songList = {
+                id: jsonData.id,
                 title: jsonData.title,
                 artist: artists,
                 audioUrl: songUrl,
@@ -95,6 +96,7 @@ var ManagerSong = {
                 });
 
                 const songList = {
+                    id: eachsong.id,
                     title: eachsong.title,
                     artist: artists,
                     audioUrl: songUrl,
@@ -126,6 +128,7 @@ var ManagerSong = {
                 });
 
                 const songList = {
+                    id: eachsong.id,
                     title: eachsong.title,
                     artist: artists,
                     audioUrl: songUrl,
@@ -157,6 +160,7 @@ var ManagerSong = {
                 });
 
                 const songList = {
+                    id: eachsong.id,
                     title: eachsong.title,
                     artist: artists,
                     audioUrl: songUrl,
@@ -188,6 +192,7 @@ var ManagerSong = {
                 });
 
                 const songList = {
+                    id: eachsong.id,
                     title: eachsong.title,
                     artist: artists,
                     audioUrl: songUrl,
@@ -199,6 +204,19 @@ var ManagerSong = {
             loadSong(0);
             playSong();
         } catch (error) {
+            window.alert(error);
+        }
+    },
+    UpdateListens: async function (songId) {
+
+        var serviceUrl = "https://localhost:7054/api/update-number-of-listens?songId=" + songId;
+        var data = {
+            songId: songId
+        };
+        APIManager.PutAPI(serviceUrl, data, onSuccess, onFailed);
+        function onSuccess(jsonData) {
+        }
+        function onFailed(xhr, status, error) {
             window.alert(error);
         }
     }
