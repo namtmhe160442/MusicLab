@@ -23,6 +23,18 @@
         songs.length = 0;
         ManagerSong.GetSongByArtistId(artistId);
     });
+    $(".play-music-playlist-btn").on('click', function () {
+        var playlistId = $(this).parent().attr("id");
+        var token = $(".jwt-token").val();
+        songs.length = 0;
+        ManagerSong.GetSongByPlaylistId(playlistId, token);
+    });
+    $(".play-music-favor-btn").on('click', function () {
+        var username = $(".username-logged").val();
+        var token = $(".jwt-token").val();
+        songs.length = 0;
+        ManagerSong.GetSongByFavorite(username, token);
+    });
 });
 
 var songUrl;
@@ -101,6 +113,68 @@ var ManagerSong = {
         try {
             var serviceUrl = "https://localhost:7054/api/get-songs-by-artist?artistId=" + id;
             var jsonData = await APIManager.GetAPIReturn(serviceUrl);
+
+            for (const eachsong of jsonData) {
+                var artists = '';
+                await ManagerSong.GetSongUrl(eachsong.id);
+
+                eachsong.songArtists.forEach(function (song) {
+                    if (song.artistId != eachsong.songArtists[eachsong.songArtists.length - 1].artistId) {
+                        song.artist.name += ", ";
+                    }
+                    artists += song.artist.name;
+                });
+
+                const songList = {
+                    title: eachsong.title,
+                    artist: artists,
+                    audioUrl: songUrl,
+                    cover: eachsong.image
+                };
+                songs.push(songList);
+            }
+
+            loadSong(0);
+            playSong();
+        } catch (error) {
+            window.alert(error);
+        }
+    },
+    GetSongByPlaylistId: async function (id, token) {
+        try {
+            var serviceUrl = "https://localhost:7054/api/get-songs-by-playlist?playlistId=" + id;
+            var jsonData = await APIManagerSecurity.GetAPISecurityReturn(serviceUrl, token);
+
+            for (const eachsong of jsonData) {
+                var artists = '';
+                await ManagerSong.GetSongUrl(eachsong.id);
+
+                eachsong.songArtists.forEach(function (song) {
+                    if (song.artistId != eachsong.songArtists[eachsong.songArtists.length - 1].artistId) {
+                        song.artist.name += ", ";
+                    }
+                    artists += song.artist.name;
+                });
+
+                const songList = {
+                    title: eachsong.title,
+                    artist: artists,
+                    audioUrl: songUrl,
+                    cover: eachsong.image
+                };
+                songs.push(songList);
+            }
+
+            loadSong(0);
+            playSong();
+        } catch (error) {
+            window.alert(error);
+        }
+    },
+    GetSongByFavorite: async function (username, token) {
+        try {
+            var serviceUrl = "https://localhost:7054/api/get-all-favourites?username=" + username;
+            var jsonData = await APIManagerSecurity.GetAPISecurityReturn(serviceUrl, token);
 
             for (const eachsong of jsonData) {
                 var artists = '';

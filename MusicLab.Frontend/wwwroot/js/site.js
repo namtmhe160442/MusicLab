@@ -184,6 +184,11 @@ $(".nav-link").click(function (e) {
         document.getElementById("nav-item-search").classList.remove("active");
     }
 });
+$(".nav-link-playlist").click(function (e) {
+    e.preventDefault();
+    var url = $(this).attr("href");
+    loadPage(url);
+});
 //--------------------------------------------
 let main = document.getElementById('main');
 let header = document.getElementById('header-overlay');
